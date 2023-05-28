@@ -3,7 +3,7 @@ import { VideogamesService } from "../services/catalogVideogames/videogamesServi
 
 export type GetVideogamesInput = void;
 export type GetVideogamesOutput = Videogame[];
-export class VideogamesUseCase {
+export class GetVideogamesUseCase {
   constructor(private videogamesService: VideogamesService) {}
 
   async getVideogames(payload: GetVideogamesInput): Promise<GetVideogamesOutput> {
