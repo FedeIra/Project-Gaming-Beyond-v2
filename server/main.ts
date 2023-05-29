@@ -1,7 +1,11 @@
 import fastify from 'fastify'
 import config from '../pkg/env/config.js';
+import { getVideogamesHandler } from './handlers/getVideogames.js';
 
 const server = fastify();
+
+getVideogamesHandler(server);
+
 const PORT = config.port || 3000;
 
 try {

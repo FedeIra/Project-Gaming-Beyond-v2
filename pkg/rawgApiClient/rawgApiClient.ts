@@ -29,7 +29,8 @@ export class RawgApiClient {
 
   async send (params: SendParams): Promise<unknown> {
     const { path, method, payload } = params;
-    const fullUrl = `${this.baseUrl}/${path}`;
+    const fullUrl = `${this.baseUrl}${path}`;
+
     const requestConfig: AxiosRequestConfig = {
       headers: {
         'Content-Type': 'application/json',
