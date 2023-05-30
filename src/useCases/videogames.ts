@@ -6,7 +6,7 @@ export type GetVideogamesOutput = Videogame[];
 export class GetVideogamesUseCase {
   constructor(private videogamesService: VideogamesService) {}
 
-  async getVideogames(payload: GetVideogamesInput): Promise<GetVideogamesOutput> {
-    return this.videogamesService.getVideogames(payload);
+  async getVideogames(input: GetVideogamesInput): Promise<GetVideogamesOutput> {
+    return this.videogamesService.getVideogames(input);
   }
 }
