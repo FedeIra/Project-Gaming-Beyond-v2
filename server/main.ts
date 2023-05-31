@@ -3,11 +3,13 @@ import config from '../pkg/env/config.js';
 import { setupErrorHandler } from './errorHandler.js';
 import { getVideogamesHandler } from './handlers/getVideogames.js';
 import { getVideogameDetailHandler } from './handlers/getVideogameDetail.js';
+import { getVideogamesByNameHandler } from './handlers/getVideogamesByName.js';
 
 const server = fastify();
 
 getVideogamesHandler(server);
 getVideogameDetailHandler(server);
+getVideogamesByNameHandler(server);
 
 setupErrorHandler(server);
 

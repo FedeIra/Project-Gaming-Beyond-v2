@@ -6,7 +6,7 @@ import { RawgVideogamesService } from "../../src/services/catalogVideogames/vide
 import { GetVideogameDetailInput as UseCaseGetVideogameDetailInput, GetVideogameDetailUseCase } from "../../src/useCases/videogameDetails.js";
 
 const getVideogameDetailInputSchema = z.object({
-  videogameId: z.number(),
+  videogameId: z.number().positive(),
 });
 
 type GetVideogameDetailInput = z.infer<typeof getVideogameDetailInputSchema>;

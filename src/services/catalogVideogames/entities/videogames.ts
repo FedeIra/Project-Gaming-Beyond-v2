@@ -5,11 +5,11 @@ export const ApiVideogamesSchema = z.array(
     z.object({
         id: z.number(),
         name: z.string(),
-        image: z.string(),
+        image: z.string().nullable(),
         genres: z.array(z.string()),
         rating: z.number(),
         platforms: z.array(z.string()),
-        releaseDate: z.string(),
+        releaseDate: z.string().nullable(),
     })
 );
 

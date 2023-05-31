@@ -1,13 +1,17 @@
 import { FastifyInstance } from "fastify";
 import { RawgApiClient } from "../../pkg/rawgApiClient/rawgApiClient.js";
 import config from "../../pkg/env/config.js";
+import { z } from "zod";
 import { RawgVideogamesService } from "../../src/services/catalogVideogames/videogamesService.js";
-import { GetVideogamesInput as UseCaseGetVideogamesInput, GetVideogamesUseCase } from "../../src/useCases/videogames.js";
+import { GetVideogamesUseCase } from "../../src/useCases/videogames.js";
 
 
-export function getVideogamesHandler(app: FastifyInstance) {
-  app.post(`/videogames`, async (request, response) => {
+const requestBodySchema = z.object({}).strict();
+
+export function getVideogamesHandler(server: FastifyInstance) {
+  server.post(`/videogames`, async (request, response) => {
     try {
+      requestBodySchema.parse(request.body);
 
       const baseUrl = config.rawgApiBaseUrl || "";
 
@@ -17,13 +21,12 @@ export function getVideogamesHandler(app: FastifyInstance) {
 
       const getVideogamesUseCase = new GetVideogamesUseCase(videogamesService);
 
-      const rawBody = request.body;
-
-      const videogames = await getVideogamesUseCase.getVideogames(rawBody as UseCaseGetVideogamesInput);
-
+      const videogames = await getVideogamesUseCase.getVideogames();
       return videogames;
     } catch (error) {
       throw error;
     }
   })
 };
+
+

@@ -13,7 +13,7 @@ export const ApiVideogameDetailSchema =
         releaseDate: z.string(),
         stores: z.array(z.string()),
     }
-);
+  );
 
 type ApiVideogameDetailResponse = z.infer<typeof ApiVideogameDetailSchema>;
 
