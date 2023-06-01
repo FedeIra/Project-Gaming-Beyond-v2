@@ -2,7 +2,7 @@ import { RawgApiClient } from "../../../pkg/rawgApiClient/rawgApiClient.js";
 import config from "../../../pkg/env/config.js";
 
 import { Videogame } from "../../models/videogame.js";
-import { Result, Genre, PlatformElement } from "../../models/videogames.js";
+import { Result, GenreData, PlatformElement } from "../../models/videogames.js";
 import { getVideogamesResponseSchema } from "./endpoints/getVideogames.js";
 import { toModelVideogames } from "./entities/videogames.js";
 
@@ -14,10 +14,16 @@ import { GetVideogameDetailPayload, getVideogameDetailResponseSchema } from "./e
 import { toModelVideogameDetail } from "./entities/videogameDetail.js";
 import { GetVideogameDetailInput } from "../../useCases/videogameDetails.js";
 
+import { GenreName, ResultGenresApi } from "../../models/genres.js";
+import { getGenresResponseSchema } from "./endpoints/getGenres.js";
+import { toModelGenres } from "./entities/genres.js";
+
+
 export interface VideogamesService {
     getVideogames(): Promise<Videogame[]>;
     getVideogamesByName(payload: GetVideogamesByNameInput): Promise<Videogame[]>;
     getVideogameDetail(input: GetVideogameDetailInput): Promise<VideogameDetail>;
+    getGenres(): Promise<GenreName[]>;
 }
 
 export class RawgVideogamesService implements VideogamesService {
@@ -31,7 +37,7 @@ export class RawgVideogamesService implements VideogamesService {
         id: game.id,
         name: game.name,
         image: game.background_image,
-        genres: game.genres.map((genre: Genre) => genre.name),
+        genres: game.genres.map((genre: GenreData) => genre.name),
         rating: game.rating,
         platforms: game.platforms.map((platform: PlatformElement) => platform.platform.name),
         releaseDate: game.released,
@@ -90,7 +96,7 @@ export class RawgVideogamesService implements VideogamesService {
     image: apiResponse.background_image,
     description: apiResponse.description.replace(/(<([^>]+)>)/gi, '')
     .replace(/&#39;/g, ''),
-    genres: apiResponse.genres.map((genre: Genre) => genre.name),
+    genres: apiResponse.genres.map((genre: GenreData) => genre.name),
     rating: apiResponse.rating,
     totalReviews: apiResponse.ratings_count,
     platforms: apiResponse.platforms.map((platform: PlatformElement) => platform.platform.name),
@@ -102,5 +108,24 @@ export class RawgVideogamesService implements VideogamesService {
   const videogameDetail = toModelVideogameDetail(apiResponseValidation);
 
   return videogameDetail;
+  }
+
+  async getGenres(): Promise<GenreName[]>{
+
+    const apiResponse: any = await this.client.send({
+      method: "get",
+      path: `/genres?key=${config.api_key}`,
+      payload: {},
+  });
+
+  const apiResponseFilter = apiResponse.results.map((genre: ResultGenresApi) => genre.name);
+  // console.log("🚀 ~ file: videogamesService.ts:122 ~ RawgVideogamesService ~ getGenres ~ apiResponseFilter:", apiResponseFilter)
+
+  const apiResponseValidation = getGenresResponseSchema.parse(apiResponseFilter);
+  console.log("🚀 ~ file: videogamesService.ts:125 ~ RawgVideogamesService ~ getGenres ~ apiResponseValidation:", apiResponseValidation)
+
+  const genres = toModelGenres(apiResponseValidation);
+
+  return genres;
   }
 }
