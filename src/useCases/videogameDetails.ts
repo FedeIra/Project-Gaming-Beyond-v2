@@ -1,5 +1,5 @@
-import { VideogameDetail } from "../models/videogameDetail.js";
-import { VideogamesService } from "../services/catalogVideogames/videogamesService.js";
+import { VideogameDetail } from "../models/rawgApi/videogameDetail.js";
+import { VideogamesService } from "../services/rawgVideogames/videogamesService.js";
 
 export type GetVideogameDetailInput = {
   videogameId: number;

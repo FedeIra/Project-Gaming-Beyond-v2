@@ -1,24 +1,24 @@
 import { RawgApiClient } from "../../../pkg/rawgApiClient/rawgApiClient.js";
 import config from "../../../pkg/env/config.js";
 
-import { Videogame } from "../../models/videogame.js";
-import { Result, GenreData, PlatformElement } from "../../models/videogames.js";
+import { Videogame } from "../../models/rawgApi/videogame.js";
+import { Result, GenreData, PlatformElement } from "../../models/rawgApi/videogames.js";
 import { getVideogamesResponseSchema } from "./endpoints/getVideogames.js";
 import { toModelVideogames } from "./entities/videogames.js";
 
 import { GetVideogamesByNameInput } from "../../useCases/videogamesByName.js";
 import { GetVideogamesByNamePayload } from "./endpoints/getVideogamesByName.js";
 
-import { VideogameDetail, Store } from "../../models/videogameDetail.js";
+import { VideogameDetail, Store } from "../../models/rawgApi/videogameDetail.js";
 import { GetVideogameDetailInput } from "../../useCases/videogameDetails.js";
 import { GetVideogameDetailPayload, getVideogameDetailResponseSchema } from "./endpoints/getVideogameDetail.js";
 import { toModelVideogameDetail } from "./entities/videogameDetail.js";
 
-import { GenreName, ResultGenresApi } from "../../models/genres.js";
+import { GenreName, ResultGenresApi } from "../../models/rawgApi/genres.js";
 import { getGenresResponseSchema } from "./endpoints/getGenres.js";
 import { toModelGenres } from "./entities/genres.js";
 
-import { PlatformNames, ResultPlatformsApi } from "../../models/platforms.js";
+import { PlatformNames, ResultPlatformsApi } from "../../models/rawgApi/platforms.js";
 import { getPlatformsResponseSchema } from "./endpoints/getPlatforms.js";
 import { toModelPlatforms } from "./entities/platforms.js";
 

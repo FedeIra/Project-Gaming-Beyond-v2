@@ -1,5 +1,5 @@
-import { PlatformNames } from "../models/platforms.js";
-import { VideogamesService } from "../services/catalogVideogames/videogamesService.js";
+import { PlatformNames } from "../models/rawgApi/platforms.js";
+import { VideogamesService } from "../services/rawgVideogames/videogamesService.js";
 
 export type GetPlatformsOutput = PlatformNames;
 

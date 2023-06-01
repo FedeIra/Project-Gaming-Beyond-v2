@@ -1,5 +1,5 @@
-import { Videogame } from "../models/videogame.js";
-import { VideogamesService } from "../services/catalogVideogames/videogamesService.js";
+import { Videogame } from "../models/rawgApi/videogame.js";
+import { VideogamesService } from "../services/rawgVideogames/videogamesService.js";
 
 export type GetVideogamesByNameInput = {
   name: string;

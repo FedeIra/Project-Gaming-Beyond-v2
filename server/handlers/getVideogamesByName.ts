@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { RawgApiClient } from "../../pkg/rawgApiClient/rawgApiClient.js";
 import config from "../../pkg/env/config.js";
 import { z } from "zod";
-import { RawgVideogamesService } from "../../src/services/catalogVideogames/videogamesService.js";
+import { RawgVideogamesService } from "../../src/services/rawgVideogames/videogamesService.js";
 import { GetVideogamesByNameInput as UseCaseGetVideogamesByNameInput, GetVideogamesByNameUseCase } from "../../src/useCases/videogamesByName.js";
 
 const getVideogamesByNameInputSchema = z.object({
