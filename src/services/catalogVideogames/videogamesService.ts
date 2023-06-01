@@ -23,7 +23,7 @@ export interface VideogamesService {
     getVideogames(): Promise<Videogame[]>;
     getVideogamesByName(payload: GetVideogamesByNameInput): Promise<Videogame[]>;
     getVideogameDetail(input: GetVideogameDetailInput): Promise<VideogameDetail>;
-    getGenres(): Promise<GenreName[]>;
+    getGenres(): Promise<GenreName>;
 }
 
 export class RawgVideogamesService implements VideogamesService {
@@ -110,7 +110,7 @@ export class RawgVideogamesService implements VideogamesService {
   return videogameDetail;
   }
 
-  async getGenres(): Promise<GenreName[]>{
+  async getGenres(): Promise<GenreName>{
 
     const apiResponse: any = await this.client.send({
       method: "get",
@@ -119,10 +119,8 @@ export class RawgVideogamesService implements VideogamesService {
   });
 
   const apiResponseFilter = apiResponse.results.map((genre: ResultGenresApi) => genre.name);
-  // console.log("🚀 ~ file: videogamesService.ts:122 ~ RawgVideogamesService ~ getGenres ~ apiResponseFilter:", apiResponseFilter)
 
   const apiResponseValidation = getGenresResponseSchema.parse(apiResponseFilter);
-  console.log("🚀 ~ file: videogamesService.ts:125 ~ RawgVideogamesService ~ getGenres ~ apiResponseValidation:", apiResponseValidation)
 
   const genres = toModelGenres(apiResponseValidation);
 
