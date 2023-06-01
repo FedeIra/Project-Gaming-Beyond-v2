@@ -26,10 +26,10 @@ export interface Result {
   dominant_color:     string;
   platforms:          PlatformElement[];
   parent_platforms:   ParentPlatform[];
-  genres:             Genre[];
+  genres:             GenreData[];
   stores:             Store[];
   clip:               null;
-  tags:               Genre[];
+  tags:               GenreData[];
   esrb_rating:        EsrbRating;
   short_screenshots:  ShortScreenshot[];
 }
@@ -49,7 +49,7 @@ export interface EsrbRating {
   slug: string;
 }
 
-export interface Genre {
+export interface GenreData {
   id:               number;
   name:             string;
   slug:             string;
@@ -95,5 +95,5 @@ export interface ShortScreenshot {
 
 export interface Store {
   id:    number;
-  store: Genre;
+  store: GenreData;
 }
