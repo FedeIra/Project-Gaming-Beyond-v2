@@ -7,3 +7,5 @@ export type Videogame = {
     platforms: string[];
     releaseDate: string | null;
 }
+
+export interface IVideogame extends Videogame {}
