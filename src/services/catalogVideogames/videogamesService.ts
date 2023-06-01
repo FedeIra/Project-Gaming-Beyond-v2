@@ -10,20 +10,24 @@ import { GetVideogamesByNameInput } from "../../useCases/videogamesByName.js";
 import { GetVideogamesByNamePayload } from "./endpoints/getVideogamesByName.js";
 
 import { VideogameDetail, Store } from "../../models/videogameDetail.js";
+import { GetVideogameDetailInput } from "../../useCases/videogameDetails.js";
 import { GetVideogameDetailPayload, getVideogameDetailResponseSchema } from "./endpoints/getVideogameDetail.js";
 import { toModelVideogameDetail } from "./entities/videogameDetail.js";
-import { GetVideogameDetailInput } from "../../useCases/videogameDetails.js";
 
 import { GenreName, ResultGenresApi } from "../../models/genres.js";
 import { getGenresResponseSchema } from "./endpoints/getGenres.js";
 import { toModelGenres } from "./entities/genres.js";
 
+import { PlatformNames, ResultPlatformsApi } from "../../models/platforms.js";
+import { getPlatformsResponseSchema } from "./endpoints/getPlatforms.js";
+import { toModelPlatforms } from "./entities/platforms.js";
 
 export interface VideogamesService {
     getVideogames(): Promise<Videogame[]>;
     getVideogamesByName(payload: GetVideogamesByNameInput): Promise<Videogame[]>;
     getVideogameDetail(input: GetVideogameDetailInput): Promise<VideogameDetail>;
     getGenres(): Promise<GenreName>;
+    getPlatforms(): Promise<PlatformNames>;
 }
 
 export class RawgVideogamesService implements VideogamesService {
@@ -125,5 +129,22 @@ export class RawgVideogamesService implements VideogamesService {
   const genres = toModelGenres(apiResponseValidation);
 
   return genres;
+  }
+
+  async getPlatforms(): Promise<PlatformNames>{
+
+    const apiResponse: any = await this.client.send({
+      method: "get",
+      path: `/platforms?key=${config.api_key}`,
+      payload: {},
+  });
+
+  const apiResponseFilter = apiResponse.results.map((platform: ResultPlatformsApi ) => platform.name);
+
+  const apiResponseValidation = getPlatformsResponseSchema.parse(apiResponseFilter);
+
+  const platforms = toModelPlatforms(apiResponseValidation);
+
+  return platforms;
   }
 }
