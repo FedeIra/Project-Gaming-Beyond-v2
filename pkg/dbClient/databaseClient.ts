@@ -1,5 +1,3 @@
-// build a client for mongo db database:
-
 import { MongoClient } from 'mongodb';
 
 export class DatabaseClient {
@@ -7,12 +5,15 @@ export class DatabaseClient {
 
   constructor (client: {
     connectionString: string;
+    useNewUrlParser: true;
+    useUnifiedTopology: true;
   }) {
     this.client = new MongoClient(client.connectionString);
   }
 
   async connect (): Promise<void> {
     await this.client.connect();
+    console.log('Connected to Videogames MongoDB database');
   }
 
   async disconnect (): Promise<void> {
@@ -20,7 +21,7 @@ export class DatabaseClient {
   }
 
   async getCollection (collectionName: string): Promise<unknown> {
-    const database = this.client.db('rawg');
+    const database = this.client.db('videogames');
     return database.collection(collectionName);
   }
 }

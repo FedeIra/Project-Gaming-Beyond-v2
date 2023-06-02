@@ -6,9 +6,11 @@ import { getVideogameDetailHandler } from './handlers/getVideogameDetail.js';
 import { getVideogamesByNameHandler } from './handlers/getVideogamesByName.js';
 import { getGenresHandler } from './handlers/getGenres.js';
 import { getPlatformsHandler } from './handlers/getPlatforms.js';
+import { createVideogameHandler } from './dbHandlers/createVideogame.js';
 
 const server = fastify();
 
+createVideogameHandler(server);
 getVideogamesHandler(server);
 getVideogameDetailHandler(server);
 getVideogamesByNameHandler(server);
