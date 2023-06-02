@@ -5,10 +5,10 @@ export class DatabaseClient {
 
   constructor (client: {
     connectionString: string;
-    useNewUrlParser: true;
-    useUnifiedTopology: true;
   }) {
-    this.client = new MongoClient(client.connectionString);
+    this.client = new MongoClient(
+      client.connectionString,
+    );
   }
 
   async connect (): Promise<void> {

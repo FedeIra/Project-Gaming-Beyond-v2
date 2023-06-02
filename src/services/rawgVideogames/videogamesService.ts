@@ -24,7 +24,7 @@ import { toModelPlatforms } from "./entities/platforms.js";
 
 export interface VideogamesService {
     getVideogames(): Promise<Videogame[]>;
-    getVideogamesByName(payload: GetVideogamesByNameInput): Promise<Videogame[]>;
+    getVideogamesByName(input: GetVideogamesByNameInput): Promise<Videogame[]>;
     getVideogameDetail(input: GetVideogameDetailInput): Promise<VideogameDetail>;
     getGenres(): Promise<GenreName>;
     getPlatforms(): Promise<PlatformNames>;
