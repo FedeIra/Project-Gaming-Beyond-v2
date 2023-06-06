@@ -1,12 +1,13 @@
 import { z, ZodError } from "zod";
 import config from "../../../pkg/env/config.js";
-import { IVideogame } from "../../models/dataBase/iVideogame.js";
 import { DatabaseClient } from "../../../pkg/dbClient/databaseClient.js";
 import { CreateVideogamesDBInput } from "../../useCases/dataBaseCases/createVideogame.js";
 import { CreateVideogameDBPayload } from "./endpoints/getVideogamesDB.js";
+import { DeleteVideogameDBInput, DeleteVideogameDBOutput} from "../../useCases/dataBaseCases/deleteVideogame.js";
 
 export interface DbVideogamesService {
   createVideogameDB(input: CreateVideogamesDBInput): Promise<string>;
+  deleteVideogameDB(input: DeleteVideogameDBInput): Promise<DeleteVideogameDBOutput>;
 }
 
 export class VideogamesServiceDB implements DbVideogamesService {
@@ -47,6 +48,20 @@ export class VideogamesServiceDB implements DbVideogamesService {
           },
         ]);
       }
+    }
+  }
+
+  async deleteVideogameDB(input: DeleteVideogameDBInput): Promise<DeleteVideogameDBOutput> {
+    const collection: any = await this.client.getCollection(`${config.videogamesCollection}`);
+
+    console.log(input.videogameId);
+
+    await collection.deleteOne({ _id: input.videogameId });
+
+    await this.client.disconnect();
+
+    return {
+      message: "Videogame deleted successfully.",
     }
   }
 }
