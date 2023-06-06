@@ -6,6 +6,7 @@ export type CreateVideogameDBPayload = {
   genres: string[];
   rating: number;
   platforms: string[];
+  description: string;
   releaseDate: string | null;
 };
 

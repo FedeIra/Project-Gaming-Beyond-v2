@@ -1,7 +1,8 @@
 import { MongoClient } from 'mongodb';
+import config from '../env/config.js';
 
 export class DatabaseClient {
-  private client: MongoClient;
+  client: MongoClient;
 
   constructor (client: {
     connectionString: string;
@@ -12,16 +13,32 @@ export class DatabaseClient {
   }
 
   async connect (): Promise<void> {
-    await this.client.connect();
-    console.log('Connected to Videogames MongoDB database');
+    try {
+      await this.client.connect();
+      console.log('Connected to Videogames Database');
+    } catch (error) {
+      console.error(error);
+      process.exit(1);
+    }
   }
 
   async disconnect (): Promise<void> {
-    await this.client.close();
+    try {
+      await this.client.close();
+      console.log('Disconnected from Videogames Database');
+    } catch (error) {
+      console.error(error);
+      process.exit(1);
+    }
   }
 
   async getCollection (collectionName: string): Promise<unknown> {
-    const database = this.client.db('videogames');
-    return database.collection(collectionName);
+    try {
+      const database = this.client.db(`${config.dbName}`);
+      return database.collection(collectionName);
+    } catch (error) {
+      console.error(error);
+      process.exit(1);
+    }
   }
 }

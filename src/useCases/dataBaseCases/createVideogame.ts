@@ -1,7 +1,7 @@
-import { IVideogame } from "../../models/rawgApi/videogame.js";
+import { IVideogame } from "../../models/dataBase/iVideogame.js";
 import { DbVideogamesService } from "../../services/dataBase/dataBaseService.js";
 
-export type CreateVideogamesDBInput = Pick<IVideogame, "name" | "image" | "genres" | "rating" | "platforms" | "releaseDate">;
+export type CreateVideogamesDBInput = Pick<IVideogame, "name" | "image" | "genres" | "rating" | "platforms" | "description" | "releaseDate">;
 
 export type CreateVideogamesDBOutput = IVideogame;
 

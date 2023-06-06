@@ -1,22 +1,29 @@
-// import entities from rawgVideogames/entities as database:
 import { z } from "zod";
-import { ApiVideogamesSchema, toModelVideogames } from "../../rawgVideogames/entities/videogames.js";
-import { Videogame } from "../../../models/rawgApi/videogame.js";
+import { IVideogame } from "../../../models/dataBase/iVideogame.js";
 
-export const DbVideogamesSchema = ApiVideogamesSchema;
+export const DbVideogamesSchema =
+        z.object({
+            id: z.string(),
+            name: z.string(),
+            image: z.string().nullable(),
+            genres: z.array(z.string()),
+            rating: z.number(),
+            platforms: z.array(z.string()),
+            description: z.string(),
+            releaseDate: z.string().nullable(),
+        });
 
 type DbVideogamesResponse = z.infer<typeof DbVideogamesSchema>;
 
-// export const toModelVideogamesDB = (response: DbVideogamesResponse) : Videogame[] => {
-//     return response.map((game) => ({
-//         id: game.id,
-//         name: game.name,
-//         image: game.image,
-//         genres: game.genres,
-//         rating: game.rating,
-//         platforms: game.platforms,
-//         releaseDate: game.releaseDate,
-//     }));
-// }
-
-export const toModelVideogamesDB = toModelVideogames as (response: DbVideogamesResponse) => Videogame[];
+export const toModelVideogameDB = (response: DbVideogamesResponse) : IVideogame => {
+    return {
+        _id: response.id,
+        name: response.name,
+        image: response.image,
+        genres: response.genres,
+        rating: response.rating,
+        platforms: response.platforms,
+        description: response.description,
+        releaseDate: response.releaseDate,
+    };
+}

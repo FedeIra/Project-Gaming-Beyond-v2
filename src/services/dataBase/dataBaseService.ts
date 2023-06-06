@@ -1,32 +1,54 @@
+import { z, ZodError } from "zod";
+import config from "../../../pkg/env/config.js";
+import { IVideogame } from "../../models/dataBase/iVideogame.js";
+import { DatabaseClient } from "../../../pkg/dbClient/databaseClient.js";
 import { CreateVideogamesDBInput } from "../../useCases/dataBaseCases/createVideogame.js";
 import { CreateVideogameDBPayload } from "./endpoints/getVideogamesDB.js";
-import { IVideogame } from "../../models/rawgApi/videogame.js";
-import { VideogameModel } from "../../models/dataBase/videogame.js";
-import { DatabaseClient } from "../../../pkg/dbClient/databaseClient.js";
 
 export interface DbVideogamesService {
   createVideogameDB(input: CreateVideogamesDBInput): Promise<IVideogame>;
 }
 
 export class VideogamesServiceDB implements DbVideogamesService {
-  constructor(
-    private client: DatabaseClient,
-  ) {}
+  private client: DatabaseClient;
 
-async createVideogameDB(payload: CreateVideogameDBPayload): Promise<IVideogame> {
-
-  const existingVideogame = await this.getUser(payload.name);
-
-  if (existingVideogame) {
-    throw new Error("Videogame already exists");
+  constructor(client: DatabaseClient) {
+    this.client = client;
   }
 
-  const newVideogame = await VideogameModel.create(payload);
+  async createVideogameDB(payload: CreateVideogameDBPayload): Promise<IVideogame> {
 
-  return newVideogame;
+    const collection: any = await this.client.getCollection(`${config.videogamesCollection}`);
+
+    await this.checkExistingVideogame(payload.name, collection);
+
+    const newVideogame = await collection.insertOne(payload);
+
+    await this.client.disconnect();
+
+    return newVideogame;
   }
 
-  async getUser(name: string): Promise<IVideogame | null> {
-    return VideogameModel.findOne({ name }).lean<IVideogame>().exec();
+  private async checkExistingVideogame(name: string, collection: any): Promise<void> {
+    const existingVideogame = await collection.findOne({ name });
+
+    if (existingVideogame) {
+      try {
+        const existingVideogameSchema = z.object({}).strict();
+        existingVideogameSchema.parse(existingVideogame);
+      } catch (error) {
+        await this.client.disconnect();
+        throw new ZodError([
+          {
+            path: ["name"],
+            message: "Videogame name already exists.",
+            code: "custom",
+          },
+        ]);
+      }
+    }
   }
 }
+
+
+

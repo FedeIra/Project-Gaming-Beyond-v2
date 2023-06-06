@@ -1,54 +1,57 @@
-import { FastifyInstance } from "fastify";
 import config from "../../pkg/env/config.js";
+import { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { VideogamesServiceDB } from "../../src/services/dataBase/dataBaseService.js";
-import { CreateVideogamesDBInput as CreateVideogamesInput, CreateVideogamesDBUseCase } from "../../src/useCases/dataBaseCases/createVideogame.js";
+import { CreateVideogamesDBInput as useCaseCreateVideogameDBInput, CreateVideogamesDBUseCase } from "../../src/useCases/dataBaseCases/createVideogame.js";
 import { DatabaseClient } from "../../pkg/dbClient/databaseClient.js";
 
-const createVideogameInputSchema = z.object({
+const createVideogameDBInputSchema = z.object({
   name: z.string().nonempty().min(3).max(25),
   image: z.string().nonempty().min(3).max(100).nullable(),
   genres: z.array(z.string().nonempty().min(3).max(25)),
   rating: z.number().min(0).max(5),
-  description: z.string().nonempty().min(3).max(100),
   platforms: z.array(z.string().nonempty().min(3).max(25)),
+  description: z.string().nonempty().min(3).max(100),
   releaseDate: z.string().nonempty().min(3).max(25).nullable(),
 });
 
-type CreateVideogameInput = z.infer<typeof createVideogameInputSchema>;
+type CreateVideogamesDBInput = z.infer<typeof createVideogameDBInputSchema>;
 
-export function createVideogameHandler(server: FastifyInstance) {
+export const createVideogameDBHandler = async (server: FastifyInstance) => {
   server.post(`/videogame/create`, async (request, response) => {
-    try {
+  try {
 
-        const dbUrl = config.dbHost || "";
+    const dbClient = new DatabaseClient({ connectionString: config.dbHost as string});
 
-        const dbClient = new DatabaseClient({ connectionString: dbUrl });
+    await dbClient.connect();
 
-        const dbVideogamesService = new VideogamesServiceDB(dbClient);
+      const dbVideogamesService = new VideogamesServiceDB(dbClient);
 
-        const createVideogameUseCase = new CreateVideogamesDBUseCase(dbVideogamesService);
+      const createVideogameUseCase = new CreateVideogamesDBUseCase(dbVideogamesService);
 
-        const rawBody = request.body;
+      const rawBody = request.body;
 
-        const input = createVideogameInputSchema.parse(rawBody);
+      const input = createVideogameDBInputSchema.parse(rawBody);
 
-        const videogame = await createVideogameUseCase.createVideogameDB(toUseCaseInput(input));
+      // -----------------------------------
 
-        return videogame;
-    } catch (error) {
-      throw error;
-    }
-  })
+      const newVideogame = await createVideogameUseCase.createVideogameDB(toUseCaseInput(input));
+
+      console.log(newVideogame);
+
+      return newVideogame;
+  } catch (error) {
+    throw error;
+  }
 }
+)};
 
-const toUseCaseInput = (input: CreateVideogameInput): CreateVideogamesInput => ({
+const toUseCaseInput = (input: CreateVideogamesDBInput): useCaseCreateVideogameDBInput => ({
   name: input.name,
   image: input.image,
   genres: input.genres,
   rating: input.rating,
   platforms: input.platforms,
+  description: input.description,
   releaseDate: input.releaseDate,
 });
-
-
