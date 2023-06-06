@@ -33,13 +33,9 @@ export const createVideogameDBHandler = async (server: FastifyInstance) => {
 
       const input = createVideogameDBInputSchema.parse(rawBody);
 
-      // -----------------------------------
+      const newVideogameId = await createVideogameUseCase.createVideogameDB(toUseCaseInput(input));
 
-      const newVideogame = await createVideogameUseCase.createVideogameDB(toUseCaseInput(input));
-
-      console.log(newVideogame);
-
-      return newVideogame;
+      return newVideogameId;
   } catch (error) {
     throw error;
   }

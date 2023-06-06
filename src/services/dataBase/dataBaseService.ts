@@ -6,7 +6,7 @@ import { CreateVideogamesDBInput } from "../../useCases/dataBaseCases/createVide
 import { CreateVideogameDBPayload } from "./endpoints/getVideogamesDB.js";
 
 export interface DbVideogamesService {
-  createVideogameDB(input: CreateVideogamesDBInput): Promise<IVideogame>;
+  createVideogameDB(input: CreateVideogamesDBInput): Promise<string>;
 }
 
 export class VideogamesServiceDB implements DbVideogamesService {
@@ -16,7 +16,7 @@ export class VideogamesServiceDB implements DbVideogamesService {
     this.client = client;
   }
 
-  async createVideogameDB(payload: CreateVideogameDBPayload): Promise<IVideogame> {
+  async createVideogameDB(payload: CreateVideogameDBPayload): Promise<string> {
 
     const collection: any = await this.client.getCollection(`${config.videogamesCollection}`);
 
@@ -26,7 +26,7 @@ export class VideogamesServiceDB implements DbVideogamesService {
 
     await this.client.disconnect();
 
-    return newVideogame;
+    return newVideogame.insertedId.toString();
   }
 
   private async checkExistingVideogame(name: string, collection: any): Promise<void> {
@@ -39,6 +39,7 @@ export class VideogamesServiceDB implements DbVideogamesService {
       } catch (error) {
         await this.client.disconnect();
         throw new ZodError([
+
           {
             path: ["name"],
             message: "Videogame name already exists.",

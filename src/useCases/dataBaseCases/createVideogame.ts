@@ -3,7 +3,7 @@ import { DbVideogamesService } from "../../services/dataBase/dataBaseService.js"
 
 export type CreateVideogamesDBInput = Pick<IVideogame, "name" | "image" | "genres" | "rating" | "platforms" | "description" | "releaseDate">;
 
-export type CreateVideogamesDBOutput = IVideogame;
+export type CreateVideogamesDBOutput = string;
 
 export class CreateVideogamesDBUseCase {
   constructor(private videogamesServiceDB: DbVideogamesService) {}
