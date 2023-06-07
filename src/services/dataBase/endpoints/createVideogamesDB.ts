@@ -9,5 +9,3 @@ export type CreateVideogameDBPayload = {
   description: string;
   releaseDate: string | null;
 };
-
-export const getVideogamesDBResponseSchema = DbVideogamesSchema;

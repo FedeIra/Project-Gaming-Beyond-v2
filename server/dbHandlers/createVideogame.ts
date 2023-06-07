@@ -19,28 +19,30 @@ type CreateVideogamesDBInput = z.infer<typeof createVideogameDBInputSchema>;
 
 export const createVideogameDBHandler = async (server: FastifyInstance) => {
   server.post(`/videogame/create`, async (request, response) => {
+
   try {
 
     const dbClient = new DatabaseClient({ connectionString: config.dbHost as string});
 
     await dbClient.connect();
 
-      const dbVideogamesService = new VideogamesServiceDB(dbClient);
+    const dbVideogamesService = new VideogamesServiceDB(dbClient);
 
-      const createVideogameUseCase = new CreateVideogamesDBUseCase(dbVideogamesService);
+    const createVideogameUseCase = new CreateVideogamesDBUseCase(dbVideogamesService);
 
-      const rawBody = request.body;
+    const rawBody = request.body;
 
-      const input = createVideogameDBInputSchema.parse(rawBody);
+    const input = createVideogameDBInputSchema.parse(rawBody);
 
-      const newVideogameId = await createVideogameUseCase.createVideogameDB(toUseCaseInput(input));
+    const newVideogameId = await createVideogameUseCase.createVideogameDB(toUseCaseInput(input));
 
-      return newVideogameId;
-  } catch (error) {
-    throw error;
-  }
-}
-)};
+    return newVideogameId;
+    } catch (error) {
+        throw error;
+      }
+    }
+  )
+};
 
 const toUseCaseInput = (input: CreateVideogamesDBInput): useCaseCreateVideogameDBInput => ({
   name: input.name,
