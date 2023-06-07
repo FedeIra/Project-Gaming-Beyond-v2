@@ -1,9 +1,11 @@
+import { ObjectId } from "mongodb";
 import { z, ZodError } from "zod";
 import config from "../../../pkg/env/config.js";
-import { ObjectId } from "mongodb";
 import { DatabaseClient } from "../../../pkg/dbClient/databaseClient.js";
+
 import { CreateVideogamesDBInput } from "../../useCases/dataBaseCases/createVideogame.js";
-import { CreateVideogameDBPayload } from "./endpoints/getVideogamesDB.js";
+import { CreateVideogameDBPayload } from "./endpoints/createVideogamesDB.js";
+
 import { DeleteVideogameDBInput, DeleteVideogameDBOutput} from "../../useCases/dataBaseCases/deleteVideogame.js";
 import { DeleteVideogameDBPayload } from "./endpoints/deleteVideogames.js";
 
@@ -27,7 +29,6 @@ export class VideogamesServiceDB implements DbVideogamesService {
         existingVideogameSchema.parse(existingVideogame);
       }
     } catch (error) {
-
         await this.client.disconnect();
         throw new ZodError([
 
