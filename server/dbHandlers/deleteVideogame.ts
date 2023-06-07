@@ -1,11 +1,13 @@
-import { FastifyInstance } from "fastify";
-import { z } from "zod";
+import { FastifyInstance } from 'fastify';
+import { z } from 'zod';
 
-import config from "../../pkg/env/config.js";
-import { DatabaseClient } from "../../pkg/dbClient/databaseClient.js";
-import { VideogamesServiceDB } from "../../src/services/dataBase/dataBaseService.js";
-import { DeleteVideogameDBInput as useCaseDeleteVideogameDBInput, DeleteVideogameDBUseCase } from "../../src/useCases/dataBaseCases/deleteVideogame.js";
-
+import config from '../../pkg/env/config.js';
+import { DatabaseClient } from '../../pkg/dbClient/databaseClient.js';
+import { VideogamesServiceDB } from '../../src/services/dataBase/dataBaseService.js';
+import {
+  DeleteVideogameDBInput as useCaseDeleteVideogameDBInput,
+  DeleteVideogameDBUseCase,
+} from '../../src/useCases/dataBaseCases/deleteVideogame.js';
 
 const deleteVideogameDBInputSchema = z.object({
   id: z.string(),
@@ -15,31 +17,36 @@ type DeleteVideogamesDBInput = z.infer<typeof deleteVideogameDBInputSchema>;
 
 export const deleteVideogameDBHandler = async (server: FastifyInstance) => {
   server.post(`/videogame/delete`, async (request, response) => {
+    try {
+      const dbClient = new DatabaseClient({
+        connectionString: config.dbHost as string,
+      });
 
-  try {
+      await dbClient.connect();
 
-    const dbClient = new DatabaseClient({ connectionString: config.dbHost as string});
+      const dbVideogamesService = new VideogamesServiceDB(dbClient);
 
-    await dbClient.connect();
+      const deleteVideogameUseCase = new DeleteVideogameDBUseCase(
+        dbVideogamesService
+      );
 
-    const dbVideogamesService = new VideogamesServiceDB(dbClient);
+      const rawBody = request.body;
 
-    const deleteVideogameUseCase = new DeleteVideogameDBUseCase(dbVideogamesService);
+      const input = deleteVideogameDBInputSchema.parse(rawBody);
 
-    const rawBody = request.body;
+      const message = await deleteVideogameUseCase.deleteVideogameDB(
+        toUseCaseInput(input)
+      );
 
-    const input = deleteVideogameDBInputSchema.parse(rawBody);
-
-    const message = await deleteVideogameUseCase.deleteVideogameDB(toUseCaseInput(input));
-
-    return message;
+      return message;
     } catch (error) {
-        throw error;
-      }
+      throw error;
     }
-  )
+  });
 };
 
-const toUseCaseInput = (input: DeleteVideogamesDBInput): useCaseDeleteVideogameDBInput => ({
+const toUseCaseInput = (
+  input: DeleteVideogamesDBInput
+): useCaseDeleteVideogameDBInput => ({
   videogameId: input.id,
 });

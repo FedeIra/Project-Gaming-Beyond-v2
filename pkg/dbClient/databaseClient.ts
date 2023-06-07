@@ -5,15 +5,11 @@ import config from '../env/config.js';
 export class DatabaseClient {
   client: MongoClient;
 
-  constructor (client: {
-    connectionString: string;
-  }) {
-    this.client = new MongoClient(
-      client.connectionString,
-    );
+  constructor(client: { connectionString: string }) {
+    this.client = new MongoClient(client.connectionString);
   }
 
-  async connect (): Promise<void> {
+  async connect(): Promise<void> {
     try {
       await this.client.connect();
       console.log('Connected to Videogames Database');
@@ -23,7 +19,7 @@ export class DatabaseClient {
     }
   }
 
-  async disconnect (): Promise<void> {
+  async disconnect(): Promise<void> {
     try {
       await this.client.close();
       console.log('Disconnected from Videogames Database');
@@ -33,7 +29,7 @@ export class DatabaseClient {
     }
   }
 
-  async getCollection (collectionName: string): Promise<unknown> {
+  async getCollection(collectionName: string): Promise<unknown> {
     try {
       const database = this.client.db(`${config.dbName}`);
       return database.collection(collectionName);

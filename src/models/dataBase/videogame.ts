@@ -1,4 +1,4 @@
-import Mongoose, {Schema} from 'mongoose';
+import Mongoose, { Schema } from 'mongoose';
 
 import config from '../../../pkg/env/config.js';
 import { IVideogame } from './iVideogame.js';
@@ -17,4 +17,7 @@ export const VideogameSchema: Schema<IVideogame> = new Schema(
   { timestamps: true }
 );
 
-export const VideogameModel = Mongoose.model(config.videogamesCollection as string, VideogameSchema);
+export const VideogameModel = Mongoose.model(
+  config.videogamesCollection as string,
+  VideogameSchema
+);

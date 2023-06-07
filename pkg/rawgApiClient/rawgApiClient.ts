@@ -13,21 +13,19 @@ const rawgApiErrorSchema = z.object({
   error: z.object({
     code: z.string(),
     message: z.string(),
-  })
+  }),
 });
 
 export class RawgApiClient {
   private axios: AxiosInstance;
   private baseUrl: string;
 
-  constructor (client: {
-    baseUrl: string
-  }) {
+  constructor(client: { baseUrl: string }) {
     this.baseUrl = client.baseUrl;
     this.axios = axios.create();
   }
 
-  async send (params: SendParams): Promise<unknown> {
+  async send(params: SendParams): Promise<unknown> {
     const { path, method, payload } = params;
     const fullUrl = `${this.baseUrl}${path}`;
 
@@ -62,7 +60,7 @@ export class RawgApiClient {
     } catch (e) {
       if (e instanceof AxiosError) {
         if (e.response?.status === 401) {
-          throw new Error (`rawg api unauthorized the request`);
+          throw new Error(`rawg api unauthorized the request`);
         }
         const data = e.response?.data;
         if (data !== undefined) {

@@ -7,5 +7,3 @@ export type CreateVideogameDBPayload = {
   description: string;
   releaseDate: string | null;
 };
-
-

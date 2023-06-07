@@ -1,4 +1,4 @@
-import fastify from 'fastify'
+import fastify from 'fastify';
 
 import config from '../pkg/env/config.js';
 
@@ -21,10 +21,10 @@ const startServer = async () => {
     console.error(err);
     process.exit(1);
   }
-}
+};
 
 const start = async () => {
   await startServer();
-}
+};
 
 start();

@@ -1,11 +1,10 @@
-import { z } from "zod";
-import { FastifyInstance } from "fastify";
+import { z } from 'zod';
+import { FastifyInstance } from 'fastify';
 
-import config from "../../pkg/env/config.js";
-import { RawgApiClient } from "../../pkg/rawgApiClient/rawgApiClient.js";
-import { RawgVideogamesService } from "../../src/services/rawgVideogames/videogamesService.js";
-import { GetPlatformsUseCase } from "../../src/useCases/platforms.js";
-
+import config from '../../pkg/env/config.js';
+import { RawgApiClient } from '../../pkg/rawgApiClient/rawgApiClient.js';
+import { RawgVideogamesService } from '../../src/services/rawgVideogames/videogamesService.js';
+import { GetPlatformsUseCase } from '../../src/useCases/platforms.js';
 
 const requestBodySchema = z.object({}).strict();
 
@@ -14,7 +13,7 @@ export function getPlatformsHandler(server: FastifyInstance) {
     try {
       requestBodySchema.parse(request.body);
 
-      const baseUrl = config.rawgApiBaseUrl || "";
+      const baseUrl = config.rawgApiBaseUrl || '';
 
       const rawgClient = new RawgApiClient({ baseUrl });
 
@@ -27,7 +26,5 @@ export function getPlatformsHandler(server: FastifyInstance) {
     } catch (error) {
       throw error;
     }
-  })
-};
-
-
+  });
+}

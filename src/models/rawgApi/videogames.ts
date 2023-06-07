@@ -3,60 +3,60 @@ export interface Videogames {
 }
 
 export interface Result {
-  id:                 number;
-  slug:               string;
-  name:               string;
-  released:           Date;
-  tba:                boolean;
-  background_image:   string;
-  rating:             number;
-  rating_top:         number;
-  ratings:            Rating[];
-  ratings_count:      number;
+  id: number;
+  slug: string;
+  name: string;
+  released: Date;
+  tba: boolean;
+  background_image: string;
+  rating: number;
+  rating_top: number;
+  ratings: Rating[];
+  ratings_count: number;
   reviews_text_count: number;
-  added:              number;
-  added_by_status:    AddedByStatus;
-  metacritic:         number;
-  playtime:           number;
-  suggestions_count:  number;
-  updated:            Date;
-  user_game:          null;
-  reviews_count:      number;
-  saturated_color:    string;
-  dominant_color:     string;
-  platforms:          PlatformElement[];
-  parent_platforms:   ParentPlatform[];
-  genres:             GenreData[];
-  stores:             Store[];
-  clip:               null;
-  tags:               GenreData[];
-  esrb_rating:        EsrbRating;
-  short_screenshots:  ShortScreenshot[];
+  added: number;
+  added_by_status: AddedByStatus;
+  metacritic: number;
+  playtime: number;
+  suggestions_count: number;
+  updated: Date;
+  user_game: null;
+  reviews_count: number;
+  saturated_color: string;
+  dominant_color: string;
+  platforms: PlatformElement[];
+  parent_platforms: ParentPlatform[];
+  genres: GenreData[];
+  stores: Store[];
+  clip: null;
+  tags: GenreData[];
+  esrb_rating: EsrbRating;
+  short_screenshots: ShortScreenshot[];
 }
 
 export interface AddedByStatus {
-  yet:     number;
-  owned:   number;
-  beaten:  number;
-  toplay:  number;
+  yet: number;
+  owned: number;
+  beaten: number;
+  toplay: number;
   dropped: number;
   playing: number;
 }
 
 export interface EsrbRating {
-  id:   number;
+  id: number;
   name: string;
   slug: string;
 }
 
 export interface GenreData {
-  id:               number;
-  name:             string;
-  slug:             string;
-  games_count:      number;
+  id: number;
+  name: string;
+  slug: string;
+  games_count: number;
   image_background: string;
-  domain?:          string;
-  language?:        string;
+  domain?: string;
+  language?: string;
 }
 
 export interface ParentPlatform {
@@ -64,36 +64,36 @@ export interface ParentPlatform {
 }
 
 export interface PlatformElement {
-  platform:        PlatformPlatform;
-  released_at:     Date;
+  platform: PlatformPlatform;
+  released_at: Date;
   requirements_en: null;
   requirements_ru: null;
 }
 
 export interface PlatformPlatform {
-  id:               number;
-  name:             string;
-  slug:             string;
-  image:            null;
-  year_end:         null;
-  year_start:       number;
-  games_count:      number;
+  id: number;
+  name: string;
+  slug: string;
+  image: null;
+  year_end: null;
+  year_start: number;
+  games_count: number;
   image_background: string;
 }
 
 export interface Rating {
-  id:      number;
-  title:   string;
-  count:   number;
+  id: number;
+  title: string;
+  count: number;
   percent: number;
 }
 
 export interface ShortScreenshot {
-  id:    number;
+  id: number;
   image: string;
 }
 
 export interface Store {
-  id:    number;
+  id: number;
   store: GenreData;
 }

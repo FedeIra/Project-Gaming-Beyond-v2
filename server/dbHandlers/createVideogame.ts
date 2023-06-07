@@ -1,11 +1,13 @@
-import { FastifyInstance } from "fastify";
-import { z } from "zod";
+import { FastifyInstance } from 'fastify';
+import { z } from 'zod';
 
-import config from "../../pkg/env/config.js";
-import { DatabaseClient } from "../../pkg/dbClient/databaseClient.js";
-import { VideogamesServiceDB } from "../../src/services/dataBase/dataBaseService.js";
-import { CreateVideogamesDBInput as useCaseCreateVideogameDBInput, CreateVideogamesDBUseCase } from "../../src/useCases/dataBaseCases/createVideogame.js";
-
+import config from '../../pkg/env/config.js';
+import { DatabaseClient } from '../../pkg/dbClient/databaseClient.js';
+import { VideogamesServiceDB } from '../../src/services/dataBase/dataBaseService.js';
+import {
+  CreateVideogamesDBInput as useCaseCreateVideogameDBInput,
+  CreateVideogamesDBUseCase,
+} from '../../src/useCases/dataBaseCases/createVideogame.js';
 
 const createVideogameDBInputSchema = z.object({
   name: z.string().nonempty().min(3).max(25),
@@ -21,32 +23,37 @@ type CreateVideogamesDBInput = z.infer<typeof createVideogameDBInputSchema>;
 
 export const createVideogameDBHandler = async (server: FastifyInstance) => {
   server.post(`/videogame/create`, async (request, response) => {
+    try {
+      const dbClient = new DatabaseClient({
+        connectionString: config.dbHost as string,
+      });
 
-  try {
+      await dbClient.connect();
 
-    const dbClient = new DatabaseClient({ connectionString: config.dbHost as string});
+      const dbVideogamesService = new VideogamesServiceDB(dbClient);
 
-    await dbClient.connect();
+      const createVideogameUseCase = new CreateVideogamesDBUseCase(
+        dbVideogamesService
+      );
 
-    const dbVideogamesService = new VideogamesServiceDB(dbClient);
+      const rawBody = request.body;
 
-    const createVideogameUseCase = new CreateVideogamesDBUseCase(dbVideogamesService);
+      const input = createVideogameDBInputSchema.parse(rawBody);
 
-    const rawBody = request.body;
+      const newVideogameId = await createVideogameUseCase.createVideogameDB(
+        toUseCaseInput(input)
+      );
 
-    const input = createVideogameDBInputSchema.parse(rawBody);
-
-    const newVideogameId = await createVideogameUseCase.createVideogameDB(toUseCaseInput(input));
-
-    return newVideogameId;
+      return newVideogameId;
     } catch (error) {
-        throw error;
-      }
+      throw error;
     }
-  )
+  });
 };
 
-const toUseCaseInput = (input: CreateVideogamesDBInput): useCaseCreateVideogameDBInput => ({
+const toUseCaseInput = (
+  input: CreateVideogamesDBInput
+): useCaseCreateVideogameDBInput => ({
   name: input.name,
   image: input.image,
   genres: input.genres,

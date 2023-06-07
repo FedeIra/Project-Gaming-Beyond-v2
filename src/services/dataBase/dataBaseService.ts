@@ -1,21 +1,26 @@
-import { ObjectId } from "mongodb";
-import { ZodError } from "zod";
+import { ObjectId } from 'mongodb';
+import { ZodError } from 'zod';
 
-import config from "../../../pkg/env/config.js";
-import { DatabaseClient } from "../../../pkg/dbClient/databaseClient.js";
+import config from '../../../pkg/env/config.js';
+import { DatabaseClient } from '../../../pkg/dbClient/databaseClient.js';
 
-import { getVideogameDbSchema } from "./endpoints/getVideogameDB.js";
-import { toModelVideogameDB } from "./entities/videogame.js";
+import { getVideogameDbSchema } from './endpoints/getVideogameDB.js';
+import { toModelVideogameDB } from './entities/videogame.js';
 
-import { CreateVideogamesDBInput } from "../../useCases/dataBaseCases/createVideogame.js";
-import { CreateVideogameDBPayload } from "./endpoints/createVideogamesDB.js";
+import { CreateVideogamesDBInput } from '../../useCases/dataBaseCases/createVideogame.js';
+import { CreateVideogameDBPayload } from './endpoints/createVideogamesDB.js';
 
-import { DeleteVideogameDBInput, DeleteVideogameDBOutput} from "../../useCases/dataBaseCases/deleteVideogame.js";
-import { DeleteVideogameDBPayload } from "./endpoints/deleteVideogames.js";
+import {
+  DeleteVideogameDBInput,
+  DeleteVideogameDBOutput,
+} from '../../useCases/dataBaseCases/deleteVideogame.js';
+import { DeleteVideogameDBPayload } from './endpoints/deleteVideogames.js';
 
 export interface DbVideogamesService {
   createVideogameDB(input: CreateVideogamesDBInput): Promise<string>;
-  deleteVideogameDB(input: DeleteVideogameDBInput): Promise<DeleteVideogameDBOutput>;
+  deleteVideogameDB(
+    input: DeleteVideogameDBInput
+  ): Promise<DeleteVideogameDBOutput>;
 }
 
 export class VideogamesServiceDB implements DbVideogamesService {
@@ -25,25 +30,31 @@ export class VideogamesServiceDB implements DbVideogamesService {
     this.client = client;
   }
 
-  private async checkNameNotRepeated(name: string, collection: any): Promise<void> {
-      const existingVideogame = await collection.findOne({ name });
+  private async checkNameNotRepeated(
+    name: string,
+    collection: any
+  ): Promise<void> {
+    const existingVideogame = await collection.findOne({ name });
 
-      if (existingVideogame !== null) {
-        throw new ZodError([
-          {
-            path: ["name"],
-            message: "Videogame name already exists.",
-            code: "custom",
-          },
-        ]);
-      }
+    if (existingVideogame !== null) {
+      throw new ZodError([
+        {
+          path: ['name'],
+          message: 'Videogame name already exists.',
+          code: 'custom',
+        },
+      ]);
     }
+  }
 
-  private async checkVideogameExists(id: string, collection: any): Promise<{ _id: ObjectId }> {
+  private async checkVideogameExists(
+    id: string,
+    collection: any
+  ): Promise<{ _id: ObjectId }> {
     try {
       const queryId = { _id: new ObjectId(id) };
 
-      const existingVideogame  = await collection.findOne(queryId);
+      const existingVideogame = await collection.findOne(queryId);
 
       getVideogameDbSchema.parse(toModelVideogameDB(existingVideogame));
 
@@ -52,17 +63,18 @@ export class VideogamesServiceDB implements DbVideogamesService {
       await this.client.disconnect();
       throw new ZodError([
         {
-          path: ["id"],
-          message: "Videogame not found.",
-          code: "custom",
+          path: ['id'],
+          message: 'Videogame not found.',
+          code: 'custom',
         },
       ]);
     }
   }
 
   async createVideogameDB(payload: CreateVideogameDBPayload): Promise<string> {
-
-    const collection: any = await this.client.getCollection(`${config.videogamesCollection}`);
+    const collection: any = await this.client.getCollection(
+      `${config.videogamesCollection}`
+    );
 
     await this.checkNameNotRepeated(payload.name, collection);
 
@@ -73,20 +85,24 @@ export class VideogamesServiceDB implements DbVideogamesService {
     return newVideogame.insertedId.toString();
   }
 
-  async deleteVideogameDB(input: DeleteVideogameDBPayload): Promise<DeleteVideogameDBOutput> {
-    const collection: any = await this.client.getCollection(`${config.videogamesCollection}`);
+  async deleteVideogameDB(
+    input: DeleteVideogameDBPayload
+  ): Promise<DeleteVideogameDBOutput> {
+    const collection: any = await this.client.getCollection(
+      `${config.videogamesCollection}`
+    );
 
-    const existingVideogameId = await this.checkVideogameExists(input.videogameId, collection);
+    const existingVideogameId = await this.checkVideogameExists(
+      input.videogameId,
+      collection
+    );
 
     await collection.deleteOne(existingVideogameId);
 
     await this.client.disconnect();
 
     return {
-      message: "Videogame deleted successfully.",
-    }
+      message: 'Videogame deleted successfully.',
+    };
   }
 }
-
-
-

@@ -8,7 +8,7 @@ export type VideogameDetail = {
   platforms: string[];
   releaseDate: string;
   stores: string[];
-}
+};
 
 export interface Store {
   id: number;
@@ -24,4 +24,3 @@ export interface StoreClass {
   games_count: number;
   image_background: string;
 }
-
