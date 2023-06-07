@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { GenreName } from "../../../models/rawgApi/genres.js";
 
+import { GenreName } from "../../../models/rawgApi/genres.js";
 
 export const ApiGenresSchema = z.array(
   z.string()

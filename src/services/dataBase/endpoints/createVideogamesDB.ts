@@ -1,5 +1,3 @@
-import { DbVideogamesSchema } from "../entities/videogame.js";
-
 export type CreateVideogameDBPayload = {
   name: string;
   image: string | null;
@@ -9,3 +7,5 @@ export type CreateVideogameDBPayload = {
   description: string;
   releaseDate: string | null;
 };
+
+

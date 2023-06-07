@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { PlatformNames } from "../../../models/rawgApi/platforms.js";
 
+import { PlatformNames } from "../../../models/rawgApi/platforms.js";
 
 export const ApiPlatformsSchema = z.array(
   z.string()

@@ -1,9 +1,11 @@
-import config from "../../pkg/env/config.js";
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
+
+import config from "../../pkg/env/config.js";
+import { DatabaseClient } from "../../pkg/dbClient/databaseClient.js";
 import { VideogamesServiceDB } from "../../src/services/dataBase/dataBaseService.js";
 import { DeleteVideogameDBInput as useCaseDeleteVideogameDBInput, DeleteVideogameDBUseCase } from "../../src/useCases/dataBaseCases/deleteVideogame.js";
-import { DatabaseClient } from "../../pkg/dbClient/databaseClient.js";
+
 
 const deleteVideogameDBInputSchema = z.object({
   id: z.string(),

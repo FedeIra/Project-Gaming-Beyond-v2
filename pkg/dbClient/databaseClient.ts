@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb';
+
 import config from '../env/config.js';
 
 export class DatabaseClient {

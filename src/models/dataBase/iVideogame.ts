@@ -1,5 +1,5 @@
 export interface IVideogame {
-  _id: string;
+  id: string;
   name: string;
   image: string | null;
   genres: string[];

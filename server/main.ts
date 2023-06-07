@@ -1,4 +1,5 @@
 import fastify from 'fastify'
+
 import config from '../pkg/env/config.js';
 
 import { setupErrorHandler } from './errorHandler.js';

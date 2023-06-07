@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { Videogame } from "../../../models/rawgApi/videogame.js";
 
 export const ApiVideogamesSchema = z.array(

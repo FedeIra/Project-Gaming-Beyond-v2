@@ -1,10 +1,11 @@
 import Mongoose, {Schema} from 'mongoose';
+
 import config from '../../../pkg/env/config.js';
 import { IVideogame } from './iVideogame.js';
 
 export const VideogameSchema: Schema<IVideogame> = new Schema(
   {
-    _id: { type: String, required: false, unique: true },
+    id: { type: String, required: false, unique: true },
     name: { type: String, required: true },
     image: { type: String, required: false },
     genres: { type: [String], required: true },

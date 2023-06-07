@@ -1,9 +1,10 @@
 import { z } from "zod";
+
 import { IVideogame } from "../../../models/dataBase/iVideogame.js";
 
 export const DbVideogamesSchema =
         z.object({
-            id: z.string(),
+            _id: z.string(),
             name: z.string(),
             image: z.string().nullable(),
             genres: z.array(z.string()),
@@ -17,7 +18,7 @@ type DbVideogamesResponse = z.infer<typeof DbVideogamesSchema>;
 
 export const toModelVideogameDB = (response: DbVideogamesResponse) : IVideogame => {
     return {
-        _id: response.id,
+        id: response._id.toString(),
         name: response.name,
         image: response.image,
         genres: response.genres,

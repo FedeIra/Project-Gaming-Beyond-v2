@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { VideogameDetail } from "../../../models/rawgApi/videogameDetail.js";
 
 export const ApiVideogameDetailSchema =

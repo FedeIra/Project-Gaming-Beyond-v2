@@ -1,5 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import { ZodError } from 'zod';
+
 import { CustomError } from '../pkg/errors/customError.js';
 
 export function setupErrorHandler(server: FastifyInstance) {

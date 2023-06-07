@@ -1,7 +1,11 @@
 import { ObjectId } from "mongodb";
-import { z, ZodError } from "zod";
+import { ZodError } from "zod";
+
 import config from "../../../pkg/env/config.js";
 import { DatabaseClient } from "../../../pkg/dbClient/databaseClient.js";
+
+import { getVideogameDbSchema } from "./endpoints/getVideogameDB.js";
+import { toModelVideogameDB } from "./entities/videogame.js";
 
 import { CreateVideogamesDBInput } from "../../useCases/dataBaseCases/createVideogame.js";
 import { CreateVideogameDBPayload } from "./endpoints/createVideogamesDB.js";
@@ -21,18 +25,11 @@ export class VideogamesServiceDB implements DbVideogamesService {
     this.client = client;
   }
 
-  private async getVideogameByName(name: string, collection: any): Promise<void> {
-    try {
+  private async checkNameNotRepeated(name: string, collection: any): Promise<void> {
       const existingVideogame = await collection.findOne({ name });
 
-      if (existingVideogame) {
-        const existingVideogameSchema = z.object({}).strict();
-        existingVideogameSchema.parse(existingVideogame);
-      }
-    } catch (error) {
-        await this.client.disconnect();
+      if (existingVideogame !== null) {
         throw new ZodError([
-
           {
             path: ["name"],
             message: "Videogame name already exists.",
@@ -42,12 +39,13 @@ export class VideogamesServiceDB implements DbVideogamesService {
       }
     }
 
-
-  private async getVideogameById(id: string, collection: any): Promise<{ _id: ObjectId }> {
+  private async checkVideogameExists(id: string, collection: any): Promise<{ _id: ObjectId }> {
     try {
       const queryId = { _id: new ObjectId(id) };
 
-      await collection.findOne(queryId);
+      const existingVideogame  = await collection.findOne(queryId);
+
+      getVideogameDbSchema.parse(toModelVideogameDB(existingVideogame));
 
       return queryId;
     } catch (error) {
@@ -66,7 +64,7 @@ export class VideogamesServiceDB implements DbVideogamesService {
 
     const collection: any = await this.client.getCollection(`${config.videogamesCollection}`);
 
-    await this.getVideogameByName(payload.name, collection);
+    await this.checkNameNotRepeated(payload.name, collection);
 
     const newVideogame = await collection.insertOne(payload);
 
@@ -78,7 +76,7 @@ export class VideogamesServiceDB implements DbVideogamesService {
   async deleteVideogameDB(input: DeleteVideogameDBPayload): Promise<DeleteVideogameDBOutput> {
     const collection: any = await this.client.getCollection(`${config.videogamesCollection}`);
 
-    const existingVideogameId = await this.getVideogameById(input.videogameId, collection);
+    const existingVideogameId = await this.checkVideogameExists(input.videogameId, collection);
 
     await collection.deleteOne(existingVideogameId);
 
