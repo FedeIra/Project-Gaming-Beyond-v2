@@ -1,9 +1,11 @@
 import { z, ZodError } from "zod";
 import config from "../../../pkg/env/config.js";
+import { ObjectId } from "mongodb";
 import { DatabaseClient } from "../../../pkg/dbClient/databaseClient.js";
 import { CreateVideogamesDBInput } from "../../useCases/dataBaseCases/createVideogame.js";
 import { CreateVideogameDBPayload } from "./endpoints/getVideogamesDB.js";
 import { DeleteVideogameDBInput, DeleteVideogameDBOutput} from "../../useCases/dataBaseCases/deleteVideogame.js";
+import { DeleteVideogameDBPayload } from "./endpoints/deleteVideogames.js";
 
 export interface DbVideogamesService {
   createVideogameDB(input: CreateVideogamesDBInput): Promise<string>;
@@ -17,27 +19,15 @@ export class VideogamesServiceDB implements DbVideogamesService {
     this.client = client;
   }
 
-  async createVideogameDB(payload: CreateVideogameDBPayload): Promise<string> {
-
-    const collection: any = await this.client.getCollection(`${config.videogamesCollection}`);
-
-    await this.checkExistingVideogame(payload.name, collection);
-
-    const newVideogame = await collection.insertOne(payload);
-
-    await this.client.disconnect();
-
-    return newVideogame.insertedId.toString();
-  }
-
-  private async checkExistingVideogame(name: string, collection: any): Promise<void> {
-    const existingVideogame = await collection.findOne({ name });
-
-    if (existingVideogame) {
-      try {
+  private async getVideogameByName(name: string, collection: any): Promise<void> {
+    try {
+      const existingVideogame = await collection.findOne({ name });
+      if (existingVideogame) {
         const existingVideogameSchema = z.object({}).strict();
         existingVideogameSchema.parse(existingVideogame);
-      } catch (error) {
+      }
+    } catch (error) {
+
         await this.client.disconnect();
         throw new ZodError([
 
@@ -49,14 +39,46 @@ export class VideogamesServiceDB implements DbVideogamesService {
         ]);
       }
     }
+
+
+  private async getVideogameById(id: string, collection: any): Promise<{ _id: ObjectId }> {
+    try {
+      const queryId = { _id: new ObjectId(id) };
+
+      await collection.findOne(queryId);
+
+      return queryId;
+    } catch (error) {
+      await this.client.disconnect();
+      throw new ZodError([
+        {
+          path: ["id"],
+          message: "Videogame not found.",
+          code: "custom",
+        },
+      ]);
+    }
   }
 
-  async deleteVideogameDB(input: DeleteVideogameDBInput): Promise<DeleteVideogameDBOutput> {
+  async createVideogameDB(payload: CreateVideogameDBPayload): Promise<string> {
+
     const collection: any = await this.client.getCollection(`${config.videogamesCollection}`);
 
-    console.log(input.videogameId);
+    await this.getVideogameByName(payload.name, collection);
 
-    await collection.deleteOne({ _id: input.videogameId });
+    const newVideogame = await collection.insertOne(payload);
+
+    await this.client.disconnect();
+
+    return newVideogame.insertedId.toString();
+  }
+
+  async deleteVideogameDB(input: DeleteVideogameDBPayload): Promise<DeleteVideogameDBOutput> {
+    const collection: any = await this.client.getCollection(`${config.videogamesCollection}`);
+
+    const existingVideogameId = await this.getVideogameById(input.videogameId, collection);
+
+    await collection.deleteOne(existingVideogameId);
 
     await this.client.disconnect();
 
