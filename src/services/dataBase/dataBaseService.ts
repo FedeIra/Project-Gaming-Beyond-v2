@@ -24,6 +24,7 @@ export class VideogamesServiceDB implements DbVideogamesService {
   private async getVideogameByName(name: string, collection: any): Promise<void> {
     try {
       const existingVideogame = await collection.findOne({ name });
+
       if (existingVideogame) {
         const existingVideogameSchema = z.object({}).strict();
         existingVideogameSchema.parse(existingVideogame);
