@@ -24,6 +24,12 @@ import {
 } from '../../useCases/dataBaseCases/getVideogamesByName.js';
 import { GetVideogamesByNameDBPayload } from './endpoints/getVideogamesByName.js';
 
+import {
+  GetVideogameByIdInput,
+  VideogameByIdDBOutput,
+} from '../../useCases/dataBaseCases/getVideogameById.js';
+import { GetVideogameByIdDBPayload } from './endpoints/getVideogameById.js';
+
 export interface DbVideogamesService {
   createVideogameDB(input: CreateVideogamesDBInput): Promise<string>;
   deleteVideogameDB(
@@ -33,6 +39,9 @@ export interface DbVideogamesService {
   getVideogamesByNameDB(
     input: GetVideogamesByNameInput
   ): Promise<VideogamesByNameDBOutput>;
+  getVideogameByIdDB(
+    input: GetVideogameByIdInput
+  ): Promise<VideogameByIdDBOutput>;
 }
 
 export class VideogamesServiceDB implements DbVideogamesService {
@@ -110,7 +119,40 @@ export class VideogamesServiceDB implements DbVideogamesService {
 
     await this.client.disconnect();
 
-    return videogamesDB.map((videogame: any) => toModelVideogameDB(videogame));
+    return videogamesDB.map((videogame: any) =>
+      getVideogameDbSchema.parse(toModelVideogameDB(videogame))
+    );
+  }
+
+  async getVideogameByIdDB(
+    input: GetVideogameByIdDBPayload
+  ): Promise<VideogameByIdDBOutput> {
+    const collection: any = await this.client.getCollection(
+      `${config.videogamesCollection}`
+    );
+
+    try {
+      const queryId = { _id: new ObjectId(input.videogameId) };
+
+      const videogame = await collection.findOne(queryId);
+
+      await this.client.disconnect();
+
+      const videogameDetail = getVideogameDbSchema.parse(
+        toModelVideogameDB(videogame)
+      );
+
+      return videogameDetail;
+    } catch (error) {
+      await this.client.disconnect();
+      throw new ZodError([
+        {
+          path: ['id'],
+          message: 'Videogame not found.',
+          code: 'custom',
+        },
+      ]);
+    }
   }
 
   async createVideogameDB(payload: CreateVideogameDBPayload): Promise<string> {
