@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { FastifyInstance } from 'fastify';
 
 import config from '../../pkg/env/config.js';
+
 import { RawgApiClient } from '../../pkg/rawgApiClient/rawgApiClient.js';
 import { RawgVideogamesService } from '../../src/services/rawgVideogames/videogamesService.js';
 import { GetVideogamesUseCase } from '../../src/useCases/rawgApiCases/videogames.js';
@@ -29,7 +30,7 @@ export function getVideogamesHandler(server: FastifyInstance) {
   });
 }
 
-export const getVideogamesRawg = async () => {
+const getVideogamesRawg = async () => {
   const baseUrl = config.rawgApiBaseUrl || '';
 
   const rawgClient = new RawgApiClient({ baseUrl });
@@ -43,7 +44,7 @@ export const getVideogamesRawg = async () => {
   return videogamesAPI;
 };
 
-export const getVideogamesDB = async () => {
+const getVideogamesDB = async () => {
   const dbClient = new DatabaseClient({
     connectionString: config.dbHost as string,
   });

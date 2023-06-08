@@ -7,3 +7,10 @@ export type Videogame = {
   platforms: string[];
   releaseDate: string | null;
 };
+
+export type VideogameByName = {
+  id: number;
+  name: string;
+  image: string | null;
+  genres: string[];
+};
