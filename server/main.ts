@@ -3,12 +3,14 @@ import fastify from 'fastify';
 import config from '../pkg/env/config.js';
 
 import { setupErrorHandler } from './errorHandler.js';
-import { videogamesRawgApiHandlers } from './rawgApiHandlers.js';
-import { dataBaseHandlers } from './dbHandlers.js';
+import { videogamesRawgDbHandlers } from './dbRawgHandlersIndex.js';
+import { videogamesRawgApiHandlers } from './rawgApiHandlersIndex.js';
+import { dataBaseHandlers } from './dbHandlersIndex.js';
 
 const fastifyServer = fastify();
 const port = Number(config.port) || 3000;
 
+videogamesRawgDbHandlers(fastifyServer);
 videogamesRawgApiHandlers(fastifyServer);
 dataBaseHandlers(fastifyServer);
 setupErrorHandler(fastifyServer);

@@ -7,7 +7,7 @@ import { RawgVideogamesService } from '../../src/services/rawgVideogames/videoga
 import {
   GetVideogameDetailInput as UseCaseGetVideogameDetailInput,
   GetVideogameDetailUseCase,
-} from '../../src/useCases/videogameDetails.js';
+} from '../../src/useCases/rawgApiCases/videogameDetails.js';
 
 const getVideogameDetailInputSchema = z.object({
   videogameId: z.number().positive(),

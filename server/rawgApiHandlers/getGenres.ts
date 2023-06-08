@@ -1,15 +1,15 @@
-import { z } from 'zod';
 import { FastifyInstance } from 'fastify';
+import { RawgApiClient } from '../../pkg/rawgApiClient/rawgApiClient.js';
+import { z } from 'zod';
 
 import config from '../../pkg/env/config.js';
-import { RawgApiClient } from '../../pkg/rawgApiClient/rawgApiClient.js';
 import { RawgVideogamesService } from '../../src/services/rawgVideogames/videogamesService.js';
-import { GetPlatformsUseCase } from '../../src/useCases/platforms.js';
+import { GetGenresUseCase } from '../../src/useCases/rawgApiCases/genres.js';
 
 const requestBodySchema = z.object({}).strict();
 
-export function getPlatformsHandler(server: FastifyInstance) {
-  server.post(`/platforms`, async (request, response) => {
+export function getGenresHandler(server: FastifyInstance) {
+  server.post(`/genres`, async (request, response) => {
     try {
       requestBodySchema.parse(request.body);
 
@@ -19,10 +19,10 @@ export function getPlatformsHandler(server: FastifyInstance) {
 
       const videogamesService = new RawgVideogamesService(rawgClient);
 
-      const getPlatformsUseCase = new GetPlatformsUseCase(videogamesService);
+      const getGenresUseCase = new GetGenresUseCase(videogamesService);
 
-      const platforms = await getPlatformsUseCase.getPlatforms();
-      return platforms;
+      const genres = await getGenresUseCase.getGenres();
+      return genres;
     } catch (error) {
       throw error;
     }

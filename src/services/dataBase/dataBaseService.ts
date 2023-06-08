@@ -16,11 +16,14 @@ import {
 } from '../../useCases/dataBaseCases/deleteVideogame.js';
 import { DeleteVideogameDBPayload } from './endpoints/deleteVideogames.js';
 
+import { GetAllVideogamesDBOutput } from '../../useCases/dataBaseCases/getAllVideogames.js';
+
 export interface DbVideogamesService {
   createVideogameDB(input: CreateVideogamesDBInput): Promise<string>;
   deleteVideogameDB(
     input: DeleteVideogameDBInput
   ): Promise<DeleteVideogameDBOutput>;
+  getAllVideogamesDB(): Promise<GetAllVideogamesDBOutput>;
 }
 
 export class VideogamesServiceDB implements DbVideogamesService {
@@ -69,6 +72,20 @@ export class VideogamesServiceDB implements DbVideogamesService {
         },
       ]);
     }
+  }
+
+  async getAllVideogamesDB(): Promise<GetAllVideogamesDBOutput> {
+    const collection: any = await this.client.getCollection(
+      `${config.videogamesCollection}`
+    );
+
+    const videogamesDB = await collection.find().toArray();
+
+    console.log(videogamesDB);
+
+    await this.client.disconnect();
+
+    return videogamesDB.map((videogame: any) => toModelVideogameDB(videogame));
   }
 
   async createVideogameDB(payload: CreateVideogameDBPayload): Promise<string> {

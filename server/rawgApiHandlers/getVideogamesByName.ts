@@ -7,7 +7,7 @@ import { RawgVideogamesService } from '../../src/services/rawgVideogames/videoga
 import {
   GetVideogamesByNameInput as UseCaseGetVideogamesByNameInput,
   GetVideogamesByNameUseCase,
-} from '../../src/useCases/videogamesByName.js';
+} from '../../src/useCases/rawgApiCases/videogamesByName.js';
 
 const getVideogamesByNameInputSchema = z.object({
   name: z.string().nonempty().min(3).max(25),

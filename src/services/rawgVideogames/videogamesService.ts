@@ -10,14 +10,14 @@ import {
 import { getVideogamesResponseSchema } from './endpoints/getVideogames.js';
 import { toModelVideogames } from './entities/videogames.js';
 
-import { GetVideogamesByNameInput } from '../../useCases/videogamesByName.js';
+import { GetVideogamesByNameInput } from '../../useCases/rawgApiCases/videogamesByName.js';
 import { GetVideogamesByNamePayload } from './endpoints/getVideogamesByName.js';
 
 import {
   VideogameDetail,
   Store,
 } from '../../models/rawgApi/videogameDetail.js';
-import { GetVideogameDetailInput } from '../../useCases/videogameDetails.js';
+import { GetVideogameDetailInput } from '../../useCases/rawgApiCases/videogameDetails.js';
 import {
   GetVideogameDetailPayload,
   getVideogameDetailResponseSchema,
