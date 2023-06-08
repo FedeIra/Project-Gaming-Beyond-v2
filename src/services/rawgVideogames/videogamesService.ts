@@ -1,7 +1,7 @@
 import { RawgApiClient } from '../../../pkg/rawgApiClient/rawgApiClient.js';
 import config from '../../../pkg/env/config.js';
 
-import { Videogame } from '../../models/rawgApi/videogame.js';
+import { Videogame, VideogameByName } from '../../models/rawgApi/videogame.js';
 import {
   Result,
   GenreData,
@@ -11,7 +11,11 @@ import { getVideogamesResponseSchema } from './endpoints/getVideogames.js';
 import { toModelVideogames } from './entities/videogames.js';
 
 import { GetVideogamesByNameInput } from '../../useCases/rawgApiCases/videogamesByName.js';
-import { GetVideogamesByNamePayload } from './endpoints/getVideogamesByName.js';
+import {
+  GetVideogamesByNamePayload,
+  getVideogamesByNameResponseSchema,
+} from './endpoints/getVideogamesByName.js';
+import { toModelVideogamesByName } from './entities/videogamesByName.js';
 
 import {
   VideogameDetail,
@@ -37,7 +41,9 @@ import { toModelPlatforms } from './entities/platforms.js';
 
 export interface VideogamesService {
   getVideogames(): Promise<Videogame[]>;
-  getVideogamesByName(input: GetVideogamesByNameInput): Promise<Videogame[]>;
+  getVideogamesByName(
+    input: GetVideogamesByNameInput
+  ): Promise<VideogameByName[]>;
   getVideogameDetail(input: GetVideogameDetailInput): Promise<VideogameDetail>;
   getGenres(): Promise<GenreName>;
   getPlatforms(): Promise<PlatformNames>;
@@ -46,7 +52,7 @@ export interface VideogamesService {
 export class RawgVideogamesService implements VideogamesService {
   constructor(private client: RawgApiClient) {}
 
-  async filterAndValidateVideogamesOutput(
+  private async filterAndValidateVideogamesOutput(
     payload: Result[]
   ): Promise<Videogame[]> {
     const apiResponseResults = payload.map((game: Result) => {
@@ -66,6 +72,24 @@ export class RawgVideogamesService implements VideogamesService {
     const apiResponseValidation =
       getVideogamesResponseSchema.parse(apiResponseResults);
     const videogames = toModelVideogames(apiResponseValidation);
+    return videogames;
+  }
+
+  private async filterAndValidateVideogameByNameOutput(
+    payload: Result[]
+  ): Promise<VideogameByName[]> {
+    const apiResponseResults = payload.map((game: Result) => {
+      return {
+        id: game.id,
+        name: game.name,
+        image: game.background_image,
+        genres: game.genres.map((genre: GenreData) => genre.name),
+      };
+    });
+
+    const apiResponseValidation =
+      getVideogamesByNameResponseSchema.parse(apiResponseResults);
+    const videogames = toModelVideogamesByName(apiResponseValidation);
     return videogames;
   }
 
@@ -90,7 +114,7 @@ export class RawgVideogamesService implements VideogamesService {
 
   async getVideogamesByName(
     payload: GetVideogamesByNamePayload
-  ): Promise<Videogame[]> {
+  ): Promise<VideogameByName[]> {
     const name = payload.name;
 
     const apiResponse: any = await this.client.send({
@@ -99,9 +123,10 @@ export class RawgVideogamesService implements VideogamesService {
       payload,
     });
 
-    const videogames = await this.filterAndValidateVideogamesOutput(
+    const videogames = await this.filterAndValidateVideogameByNameOutput(
       apiResponse.results
     );
+
     return videogames;
   }
 
