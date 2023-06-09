@@ -30,6 +30,12 @@ import {
 } from '../../useCases/dataBaseCases/getVideogameById.js';
 import { GetVideogameByIdDBPayload } from './endpoints/getVideogameById.js';
 
+import {
+  UpdateVideogameDBInput,
+  UpdateVideogameDBOutput,
+} from '../../useCases/dataBaseCases/updateVideogame.js';
+import { UpdateVideogameDBPayload } from './endpoints/updateVideogameDB.js';
+
 export interface DbVideogamesService {
   createVideogameDB(input: CreateVideogamesDBInput): Promise<string>;
   deleteVideogameDB(
@@ -42,6 +48,9 @@ export interface DbVideogamesService {
   getVideogameByIdDB(
     input: GetVideogameByIdInput
   ): Promise<VideogameByIdDBOutput>;
+  updateVideogameDB(
+    input: UpdateVideogameDBInput
+  ): Promise<UpdateVideogameDBOutput>;
 }
 
 export class VideogamesServiceDB implements DbVideogamesService {
@@ -98,8 +107,6 @@ export class VideogamesServiceDB implements DbVideogamesService {
     );
 
     const videogamesDB = await collection.find().toArray();
-
-    console.log(videogamesDB);
 
     await this.client.disconnect();
 
@@ -187,6 +194,36 @@ export class VideogamesServiceDB implements DbVideogamesService {
 
     return {
       message: 'Videogame deleted successfully.',
+    };
+  }
+
+  async updateVideogameDB(
+    input: UpdateVideogameDBPayload
+  ): Promise<UpdateVideogameDBOutput> {
+    const collection: any = await this.client.getCollection(
+      `${config.videogamesCollection}`
+    );
+
+    const existingVideogameId = await this.checkVideogameExists(
+      input.id,
+      collection
+    );
+
+    await collection.updateOne(existingVideogameId, {
+      $set: {
+        name: input.name,
+        image: input.image,
+        genres: input.genres,
+        rating: input.rating,
+        platforms: input.platforms,
+        description: input.description,
+        releaseDate: input.releaseDate,
+      },
+    });
+    await this.client.disconnect();
+
+    return {
+      message: 'Videogame updated successfully.',
     };
   }
 }
