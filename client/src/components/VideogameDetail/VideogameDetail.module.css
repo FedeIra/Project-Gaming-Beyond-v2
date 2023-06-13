@@ -1,0 +1,269 @@
+.container_all {
+  scroll-behavior: smooth;
+  background-color: #0e0f12;
+  background: linear-gradient(180deg, #0e1211 0%, #013c3e 100%);
+  background-size: cover;
+  height: 100vh;
+  width: 100vw;
+  margin-top: -30px;
+  margin-left: -0.5%;
+  animation: show 2s;
+}
+
+@keyframes show {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.navBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2%;
+}
+
+.logo {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  color: rgb(255, 255, 255);
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  border: #3e866c 1px solid;
+  margin: 10px;
+}
+
+.header_buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 2%;
+}
+
+.first_container {
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  flex-direction: column;
+  width: 70vw;
+  margin: 0 auto;
+  color: white;
+  border-radius: 10px;
+}
+
+.second_container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  margin: 0 3% 3% 3%;
+}
+
+.title {
+  font-size: 20px;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.left_column {
+  margin: 3%;
+  display: flex;
+  flex-direction: column;
+}
+
+.image {
+  width: 450px;
+  height: 400px;
+  border-radius: 4%;
+}
+
+.gameplayAndBuy {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1%;
+}
+
+.youtube_image {
+  filter: invert(100%);
+  width: 30px;
+  margin-right: 10px;
+}
+
+.arrow_image {
+  width: 30px;
+  margin-left: 30px;
+  margin-right: -22px;
+}
+
+.button_gameplay {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.buy {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.select {
+  font: inherit;
+  font: bolder;
+  cursor: pointer;
+  padding: 14px;
+  background-color: rgba(3, 3, 3, 0);
+  color: white;
+  border: #3e866c 1px solid;
+  border-left: none;
+  border-radius: 10px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.cart_image {
+  filter: invert(100%);
+  width: 31px;
+  padding: 9px;
+  border: #d8748b 1px solid;
+  border-right: none;
+  border-radius: 10px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.select_options {
+  font: inherit;
+  font: bolder;
+  cursor: pointer;
+  padding: 5px;
+  background-color: black;
+  color: white;
+}
+
+.card {
+  font-size: 14px;
+  margin-top: 1.5%;
+  margin-right: 3%;
+  text-align: justify;
+}
+
+.star_rating {
+  color: orange;
+}
+
+.no_orange {
+  color: white;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.text {
+  line-height: 1.5;
+}
+
+.button {
+  background-color: #3e866c;
+  color: rgb(255, 255, 255);
+  padding: 10px 28px;
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 10px;
+  border: none;
+  margin: 20px 20px 18px 0;
+}
+
+.button_delete {
+  background-color: #8a0a0a;
+  padding: 5px 8px;
+}
+
+.button_edit {
+  padding: 5px 8px;
+}
+
+.button_delete:hover {
+  size-adjust: 0.8;
+}
+
+.button:hover {
+  transform: scale(1.3);
+  transition: 0.5s;
+}
+
+.button_gameplay:hover {
+  transform: scale(1.1);
+  transition: 0.5s;
+}
+
+/* mae component responsive from 1291 to 770: */
+@media (max-width: 1291px) and (min-width: 770px) {
+  .first_container {
+    width: 90vw;
+  }
+  .second_container {
+    flex-direction: column;
+  }
+  .left_column {
+    margin: 0;
+  }
+  .image {
+    width: 100%;
+    height: 100%;
+  }
+  .gameplayAndBuy {
+    margin-top: 0;
+  }
+  .button_gameplay {
+    margin-top: 1%;
+  }
+  .buy {
+    margin-top: 1%;
+  }
+  .card {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .first_container {
+    width: 90vw;
+  }
+  .second_container {
+    flex-direction: column;
+  }
+  .left_column {
+    margin: 0;
+  }
+  .image {
+    width: 100%;
+    height: 100%;
+  }
+  .gameplayAndBuy {
+    margin-top: 0;
+  }
+  .button_gameplay {
+    margin-top: 1%;
+  }
+  .buy {
+    margin-top: 1%;
+  }
+  .card {
+    margin-top: 0;
+  }
+}
