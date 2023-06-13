@@ -32,13 +32,15 @@ export function getVideogameDetailHandler(server: FastifyInstance) {
 
       let videogameDetail;
 
-      if (typeof input.videogameId === 'number') {
+      if (
+        typeof input.videogameId === 'string' &&
+        !/^\d+$/.test(input.videogameId)
+      ) {
+        videogameDetail = await getVideogameDb(input);
+      } else {
         videogameDetail = await getVideogameRawg(input);
       }
 
-      if (typeof input.videogameId === 'string') {
-        videogameDetail = await getVideogameDb(input);
-      }
       return videogameDetail;
     } catch (error) {
       throw error;
