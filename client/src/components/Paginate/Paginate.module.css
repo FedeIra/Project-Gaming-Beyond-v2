@@ -1,0 +1,88 @@
+.paginate {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  margin-right: 3.5%;
+  padding: 10px;
+  margin-bottom: 0.5%;
+  margin-top: 0.5%;
+}
+
+.buttons {
+  margin: 0 3px;
+  padding: 12px 17px;
+  border-radius: 5px;
+  background-color: #3e866c;
+  color: white;
+  font-family: 'VT323', monospace;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+}
+
+@media screen and (max-width: 768px) {
+  .buttons {
+    padding: 10px 15px;
+    font-size: 0.8rem;
+  }
+}
+
+.buttons:hover {
+  color: rgb(239, 232, 232);
+  transform: scale(1.1);
+  transition: 0.5s;
+  box-shadow: 0 0 10px #4caf50;
+}
+
+.buttons:focus {
+  background-color: white;
+  color: rgb(0, 0, 0);
+  transform: scale(1.1);
+}
+
+.paginate_images {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  filter: invert(100%);
+}
+
+/* make paginate_images responsive: */
+@media screen and (max-width: 768px) {
+  .paginate_images {
+    width: 10px;
+  }
+}
+
+.button_nextOrPrevious {
+  margin: 0 3px;
+  padding: 12px 17px;
+  border-radius: 5px;
+  background-color: #3e866c;
+  color: white;
+  font-family: 'VT323', monospace;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+}
+
+.button_nextOrPrevious:hover {
+  color: rgb(239, 232, 232);
+  transform: scale(1.1);
+  transition: 0.5s;
+  box-shadow: 0 0 10px #4caf50;
+}
+
+@media screen and (max-width: 768px) {
+  .paginate {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-right: 0;
+    padding: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+    margin-left: 15px;
+  }
+}
