@@ -8,7 +8,8 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
-    "strict": true
+    "strict": true,
+    "esModuleInterop": true
   },
   "ts-node": {
     "esm": true
