@@ -8,8 +8,8 @@ import { videogamesRawgDbHandlers } from './dbRawgHandlersIndex.js';
 import { videogamesRawgApiHandlers } from './rawgApiHandlersIndex.js';
 import { dataBaseHandlers } from './dbHandlersIndex.js';
 
-const fastifyServer = fastify();
-const port = Number(config.port) || 3000;
+const fastifyServer: any = fastify();
+const port = config.port || 3000;
 const host = config.host;
 
 fastifyServer.register(cors, {
