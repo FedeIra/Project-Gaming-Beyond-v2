@@ -2,6 +2,7 @@ import fastify from 'fastify';
 import cors from '@fastify/cors';
 
 import config from '../pkg/env/config.js';
+require('dotenv').config();
 
 import { setupErrorHandler } from './errorHandler.js';
 import { videogamesRawgDbHandlers } from './dbRawgHandlersIndex.js';
@@ -9,7 +10,7 @@ import { videogamesRawgApiHandlers } from './rawgApiHandlersIndex.js';
 import { dataBaseHandlers } from './dbHandlersIndex.js';
 
 const fastifyServer: any = fastify();
-const port = config.port || 3000;
+const port = process.env.PORT || config.port || 3000;
 const host = config.host;
 
 fastifyServer.register(cors, {
