@@ -1,22 +1,22 @@
-import axios from 'axios';
+import axios from "axios";
 
-export const GET_VIDEOGAMES = 'GET_VIDEOGAMES';
-export const FILTER_BY_GENRE = 'FILTER_BY_GENRE';
-export const FILTER_BY_CREATION = 'FILTER_BY_CREATION';
-export const GET_VIDEOGAMES_REFRESH = 'GET_VIDEOGAMES_REFRESH';
-export const GET_VIDEOGAMES_DETAIL = 'GET_VIDEOGAMES_DETAIL';
-export const ORDER_BY_AZ = 'ORDER_BY_AZ';
-export const ORDER_BY_RATING = 'ORDER_BY_RATING';
-export const GET_VIDEOGAMES_BY_NAME = 'GET_VIDEOGAMES_BY_NAME';
-export const CREATE_VIDEOGAME = 'CREATE_VIDEOGAME';
-export const GET_GENRES = 'GET_GENRES';
-export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
-export const DELETE_VIDEOGAME = 'DELETE_VIDEOGAME';
-export const FILTER_BY_PLATFORM = 'FILTER_BY_PLATFORM';
-export const UPDATE_VIDEOGAME = 'UPDATE_VIDEOGAME';
-export const GET_PLATFORMS = 'GET_PLATFORMS';
-export const ORDER_BY_RELEASED = 'ORDER_BY_RELEASED';
-export const SORT_FILTER_RECOMMENDED = 'SORT_FILTER_RECOMMENDED';
+export const GET_VIDEOGAMES = "GET_VIDEOGAMES";
+export const FILTER_BY_GENRE = "FILTER_BY_GENRE";
+export const FILTER_BY_CREATION = "FILTER_BY_CREATION";
+export const GET_VIDEOGAMES_REFRESH = "GET_VIDEOGAMES_REFRESH";
+export const GET_VIDEOGAMES_DETAIL = "GET_VIDEOGAMES_DETAIL";
+export const ORDER_BY_AZ = "ORDER_BY_AZ";
+export const ORDER_BY_RATING = "ORDER_BY_RATING";
+export const GET_VIDEOGAMES_BY_NAME = "GET_VIDEOGAMES_BY_NAME";
+export const CREATE_VIDEOGAME = "CREATE_VIDEOGAME";
+export const GET_GENRES = "GET_GENRES";
+export const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
+export const DELETE_VIDEOGAME = "DELETE_VIDEOGAME";
+export const FILTER_BY_PLATFORM = "FILTER_BY_PLATFORM";
+export const UPDATE_VIDEOGAME = "UPDATE_VIDEOGAME";
+export const GET_PLATFORMS = "GET_PLATFORMS";
+export const ORDER_BY_RELEASED = "ORDER_BY_RELEASED";
+export const SORT_FILTER_RECOMMENDED = "SORT_FILTER_RECOMMENDED";
 
 //ACTIONS -- THUNK
 
@@ -64,7 +64,7 @@ export const getVideogamesByName = (name) => {
     let videogames = await axios.post(`/videogames/search`, { name });
     if (videogames.data.length === 0) {
       alert(
-        'Apologies! No videogames were found by that name. Please try again.'
+        "Apologies! No videogames were found by that name. Please try again."
       );
     } else {
       return dispatch({
@@ -202,8 +202,3 @@ export const editVideogame = (videogame) => {
     });
   };
 };
-
-//TODO: DEPLOY
-/* Delete the entire rout.
-Before: http://localhost:3001/videogames/edit
-Now: /videogames/edit  */

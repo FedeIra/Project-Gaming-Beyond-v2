@@ -7,6 +7,7 @@ const config = {
   dbHost: process.env.DATABASE_URL,
   dbName: process.env.DB_NAME,
   videogamesCollection: process.env.VIDEOGAMES_COLLECTION_NAME,
+  host: process.env.HOST,
 };
 
 export default config;

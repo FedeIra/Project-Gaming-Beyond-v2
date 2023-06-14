@@ -1,25 +1,20 @@
 // Import react utilities:
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 
 // Import app component and store:
-import App from './App';
-import { store } from './store';
-// import reportWebVitals from './reportWebVitals';
+import App from "./App";
+import { store } from "./store";
 
 // Import style:
-import './index.css';
+import "./index.css";
 
-// TODO: deploy (down):
-import axios from 'axios';
-// import dotenv from 'dotenv';
-// dotenv.config();
+import axios from "axios";
 
 axios.defaults.baseURL =
-  // `https://videogames-web-production.up.railway.app/` ||
-  'http://localhost:3000';
-// TODO: deploy (up)
+  `https://project-gaming-beyond-v2-production.up.railway.app/` ||
+  "http://localhost:3001";
 
 ReactDOM.render(
   <Provider store={store}>
@@ -27,7 +22,5 @@ ReactDOM.render(
       <App />
     </React.StrictMode>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
-
-// reportWebVitals();
