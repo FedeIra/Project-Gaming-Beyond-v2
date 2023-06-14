@@ -6,19 +6,18 @@ import { Provider } from "react-redux";
 // Import app component and store:
 import App from "./App";
 import { store } from "./store";
-// import reportWebVitals from './reportWebVitals';
 
 // Import style:
 import "./index.css";
 
 // TODO: deploy (down):
 import axios from "axios";
-// import dotenv from 'dotenv';
-// dotenv.config();
+import dotenv from "dotenv";
+dotenv.config();
 
 axios.defaults.baseURL =
   `https://project-gaming-beyond-v2-production.up.railway.app/` ||
-  "http://localhost:3000";
+  "http://localhost:3001";
 
 ReactDOM.render(
   <Provider store={store}>
@@ -28,5 +27,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
-
-// reportWebVitals();
