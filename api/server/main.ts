@@ -2,7 +2,7 @@ import fastify from 'fastify';
 import cors from '@fastify/cors';
 
 import config from '../pkg/env/config.js';
-require('dotenv').config();
+import 'dotenv/config.js';
 
 import { setupErrorHandler } from './errorHandler.js';
 import { videogamesRawgDbHandlers } from './dbRawgHandlersIndex.js';
