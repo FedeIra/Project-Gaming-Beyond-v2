@@ -11,14 +11,21 @@ import { dataBaseHandlers } from './dbHandlersIndex.js';
 const fastifyServer = fastify();
 const port = Number(config.port) || 3000;
 
-fastifyServer.register(cors, {
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'Access-Control-Allow-Origin',
-  ],
+// fastifyServer.register(cors, {
+//   origin: '*',
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: [
+//     'Content-Type',
+//     'Authorization',
+//   ],
+// });
+
+fastifyServer.register((fastify: any, options: any, done: any) => {
+  fastify.register(require('fastify-cors'), {
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  });
+  done();
 });
 
 videogamesRawgDbHandlers(fastifyServer);
