@@ -14,7 +14,7 @@ import axios from "axios";
 
 axios.defaults.baseURL =
   `https://project-gaming-beyond-v2-production.up.railway.app/` ||
-  "http://localhost:3001";
+  "http://localhost:3000";
 
 ReactDOM.render(
   <Provider store={store}>
