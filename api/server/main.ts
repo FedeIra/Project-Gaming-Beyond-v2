@@ -1,4 +1,4 @@
-import fastify from 'fastify';
+import Fastify from 'fastify';
 import cors from '@fastify/cors';
 
 import config from '../pkg/env/config.js';
@@ -8,24 +8,17 @@ import { videogamesRawgDbHandlers } from './dbRawgHandlersIndex.js';
 import { videogamesRawgApiHandlers } from './rawgApiHandlersIndex.js';
 import { dataBaseHandlers } from './dbHandlersIndex.js';
 
-const fastifyServer = fastify();
+const fastifyServer = Fastify();
 const port = Number(config.port) || 3000;
 
-// fastifyServer.register(cors, {
-//   origin: '*',
-//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-//   allowedHeaders: [
-//     'Content-Type',
-//     'Authorization',
-//   ],
-// });
-
-fastifyServer.register((fastify: any, options: any, done: any) => {
-  fastify.register(require('fastify-cors'), {
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  });
-  done();
+await fastifyServer.register(cors, {
+  origin: [
+    `http://localhost:3000`,
+    `http://localhost:3001`,
+    `https://project-gaming-beyond-v2-production.up.railway.app/`,
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 });
 
 videogamesRawgDbHandlers(fastifyServer);
