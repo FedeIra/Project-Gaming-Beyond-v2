@@ -18,7 +18,6 @@ fastifyServer.register(cors, {
     'Content-Type',
     'Authorization',
     'Access-Control-Allow-Origin',
-    'Access-Control-Allow-Headers',
   ],
 });
 
