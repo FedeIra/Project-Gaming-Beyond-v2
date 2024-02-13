@@ -14,6 +14,7 @@ export class DatabaseClient {
       await this.client.connect();
       console.log('Connected to Videogames Database');
     } catch (error) {
+      console.log(`THERES AN ERROR WITH DATABASE`);
       console.error(error);
       process.exit(1);
     }
