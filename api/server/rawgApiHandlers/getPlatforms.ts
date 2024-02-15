@@ -22,6 +22,7 @@ export function getPlatformsHandler(server: FastifyInstance) {
       const getPlatformsUseCase = new GetPlatformsUseCase(videogamesService);
 
       const platforms = await getPlatformsUseCase.getPlatforms();
+
       return platforms;
     } catch (error) {
       throw error;
