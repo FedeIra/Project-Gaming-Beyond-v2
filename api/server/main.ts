@@ -11,12 +11,6 @@ import { dataBaseHandlers } from './dbHandlersIndex.js';
 const fastifyServer = Fastify();
 const port = Number(config.port) || 3000;
 
-await fastifyServer.register(cors, {
-  origin: ['*'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-});
-
 videogamesRawgDbHandlers(fastifyServer);
 videogamesRawgApiHandlers(fastifyServer);
 dataBaseHandlers(fastifyServer);
