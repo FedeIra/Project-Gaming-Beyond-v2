@@ -126,10 +126,7 @@ export const filterVideogamesAPIorDB = (payload) => {
 // GET GENRES:
 export const getGenres = () => {
   return async function (dispatch) {
-    let genres = await axios.post(
-      `https://project-gaming-beyond-v2-production.up.railway.app/genres`,
-      {}
-    );
+    let genres = await axios.post(`/genres`, {});
     return dispatch({
       type: GET_GENRES,
       payload: genres.data,
