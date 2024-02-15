@@ -12,11 +12,7 @@ const fastifyServer = Fastify();
 const port = Number(config.port) || 3000;
 
 await fastifyServer.register(cors, {
-  origin: [
-    'http://localhost:3001',
-    'http://localhost:3000',
-    'https://gaming-beyond-v2.vercel.app',
-  ],
+  origin: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
 });
 
