@@ -11,7 +11,6 @@ import { dataBaseHandlers } from './dbHandlersIndex.js';
 const fastifyServer = Fastify();
 const port = Number(config.port) || 3000;
 
-fastifyServer.register(cors, {});
 await fastifyServer.register(cors, {
   origin: [`*`],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
