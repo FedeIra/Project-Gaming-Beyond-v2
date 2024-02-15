@@ -14,6 +14,7 @@ const port = Number(config.port) || 3000;
 await fastifyServer.register(cors, {
   origin: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 });
 
 videogamesRawgDbHandlers(fastifyServer);
