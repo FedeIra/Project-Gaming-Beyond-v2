@@ -12,7 +12,13 @@ const fastifyServer = Fastify();
 const port = Number(config.port) || 3000;
 
 await fastifyServer.register(cors, {
-  origin: [`*`],
+  origin: [
+    'http://localhost:3001',
+    'http://localhost:3000',
+    'https://project-gaming-beyond-v2-production.up.railway.app/',
+    'https://project-gaming-beyond-v2-production.up.railway.app',
+    '*',
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 });
