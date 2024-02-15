@@ -11,12 +11,9 @@ import { dataBaseHandlers } from './dbHandlersIndex.js';
 const fastifyServer = Fastify();
 const port = Number(config.port) || 3000;
 
+fastifyServer.register(cors, {});
 await fastifyServer.register(cors, {
-  origin: [
-    `http://localhost:3000`,
-    `http://localhost:3001`,
-    `https://project-gaming-beyond-v2-production.up.railway.app/`,
-  ],
+  origin: [`*`],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 });
