@@ -12,7 +12,7 @@ const fastifyServer = Fastify();
 const port = Number(config.port) || 3000;
 
 fastifyServer.register(cors, {
-  origin: '*',
+  origin: 'https://project-gaming-beyond-v2-production.up.railway.app/',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 });
