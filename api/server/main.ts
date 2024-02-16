@@ -9,7 +9,8 @@ import { videogamesRawgApiHandlers } from './rawgApiHandlersIndex.js';
 import { dataBaseHandlers } from './dbHandlersIndex.js';
 
 const fastifyServer = fastify();
-const port = Number(config.port) || 3000;
+const port = Number(config.port) || 3001;
+const host = config.host || '0.0.0.0';
 
 fastifyServer.register(cors, {
   origin: '*',
@@ -25,7 +26,10 @@ setupErrorHandler(fastifyServer);
 
 const startServer = async () => {
   try {
-    await fastifyServer.listen({ port });
+    await fastifyServer.listen({
+      port,
+      host,
+    });
     console.log(`Listening at http://localhost:${port}`);
   } catch (err) {
     console.error(err);
